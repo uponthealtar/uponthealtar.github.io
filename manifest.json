@@ -1,0 +1,16 @@
+{
+  "name": "Upon the Altar Prayer Ministry",
+  "short_name": "The Altar",
+  "description": "A Place of Prayer, A Life of Fire.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1f3d",
+  "theme_color": "#0f1f3d",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
