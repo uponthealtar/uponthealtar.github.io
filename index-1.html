@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Upon the Altar Prayer Ministry. A Place of Prayer, A Life of Fire.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Upon the Altar</title>
+<meta name="theme-color" content="#0f1f3d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Figtree:wght@400;500;600;700&family=Lora:ital,wght@0,500;1,400;1,500&display=swap">
+<style>
+/* Layout: phone = slim top bar + bottom tab bar; desktop = navy sidebar + one calm centred column of scripture cards */
+:root{
+  --navy:#0f1f3d; --navy-deep:#0a1630; --hero:#0f1f3d; --hero-2:#182d57;
+  --gold:#c8a24a; --gold-strong:#b38a2c; --gold-text:#86651a; --gold-wash:#f6eed9; --on-gold:#0a1630;
+  --bg:#f3f5f9; --surface:#ffffff; --surface-2:#eceff6; --fg:#132240; --muted:#58647e; --line:#dce2ec;
+  --on-navy:#ffffff; --on-navy-muted:#b8c2d9; --flame-inner:#fff6dc; --heat-1:#efe2bd; --heat-2:#dcc078;
+  --ok:#1d7349; --ok-wash:#e2f2e9; --warn:#8a5300; --warn-wash:#fcf0d9; --err:#b42318; --err-wash:#fde7e4;
+  --shadow:0 1px 2px rgba(15,31,61,.05),0 6px 20px rgba(15,31,61,.06);
+  --overlay:rgba(8,16,34,.55);
+  --f-brand:"Cinzel","Trajan Pro",Georgia,serif;
+  --f-scripture:"Lora",Georgia,"Times New Roman",serif;
+  --f-ui:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:16px; --r-sm:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#0b1731; --navy-deep:#071024; --hero:#13264b; --hero-2:#1b3463;
+  --gold:#d4ae55; --gold-strong:#e0bd68; --gold-text:#dcb964; --gold-wash:#2b2614; --on-gold:#0a1630;
+  --bg:#081226; --surface:#0f1d38; --surface-2:#16284c; --fg:#e9eef9; --muted:#9daac6; --line:#22355c;
+  --on-navy:#ffffff; --on-navy-muted:#b0bbd6; --flame-inner:#fff6dc; --heat-1:#3f3618; --heat-2:#7d6830;
+  --ok:#62d29d; --ok-wash:#10301f; --warn:#f1b95f; --warn-wash:#35270c; --err:#ff8d7e; --err-wash:#3b1512;
+  --shadow:0 1px 2px rgba(0,0,0,.3); --overlay:rgba(0,0,0,.6); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --navy:#0b1731; --navy-deep:#071024; --hero:#13264b; --hero-2:#1b3463;
+  --gold:#d4ae55; --gold-strong:#e0bd68; --gold-text:#dcb964; --gold-wash:#2b2614; --on-gold:#0a1630;
+  --bg:#081226; --surface:#0f1d38; --surface-2:#16284c; --fg:#e9eef9; --muted:#9daac6; --line:#22355c;
+  --on-navy:#ffffff; --on-navy-muted:#b0bbd6; --flame-inner:#fff6dc; --heat-1:#3f3618; --heat-2:#7d6830;
+  --ok:#62d29d; --ok-wash:#10301f; --warn:#f1b95f; --warn-wash:#35270c; --err:#ff8d7e; --err-wash:#3b1512;
+  --shadow:0 1px 2px rgba(0,0,0,.3); --overlay:rgba(0,0,0,.6); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--fg);font-family:var(--f-ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--navy)}
+h1,h2,h3,h4{margin:0;line-height:1.25;text-wrap:balance}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--gold-text)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Shell ---------- */
+.app{min-height:100%}
+.sidebar{display:none}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--navy);color:var(--on-navy);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;align-items:center;gap:10px}
+.brand-mini{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.brand-mini .wm{font-family:var(--f-brand);font-weight:600;letter-spacing:.08em;font-size:15px;white-space:nowrap}
+.topbar .spacer{flex:1}
+.demo-strip{background:var(--gold-wash);color:var(--fg);font-size:12.5px;border-bottom:1px solid var(--line);
+  padding-block:7px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.demo-strip b{color:var(--gold-text);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.demo-strip button{background:none;border:0;padding:0;color:var(--gold-text);text-decoration:underline;cursor:pointer;font-size:12.5px}
+main{padding-block:20px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));outline:none}
+.view{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(6,1fr);
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.bottomnav button{background:none;border:0;padding:8px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:11.5px;font-weight:600;color:var(--muted);cursor:pointer;min-height:58px}
+.bottomnav button svg{width:22px;height:22px}
+.bottomnav button[aria-current="page"]{color:var(--fg)}
+.bottomnav button[aria-current="page"] .nav-ic{background:var(--gold-wash);color:var(--gold-text)}
+.nav-ic{display:grid;place-items:center;width:42px;height:28px;border-radius:14px}
+
+@media (min-width:960px){
+  .app{display:grid;grid-template-columns:252px minmax(0,1fr)}
+  .sidebar{display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;background:var(--navy);color:var(--on-navy);
+    padding:28px 18px 22px;padding-left:max(18px,env(safe-area-inset-left,0px))}
+  .side-brand{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:0 8px 22px;margin-bottom:8px;border-bottom:1px solid rgba(200,162,74,.28)}
+  .side-brand .wm{font-family:var(--f-brand);font-weight:600;font-size:21px;letter-spacing:.06em;line-height:1.15}
+  .side-brand .tg{font-family:var(--f-scripture);font-style:italic;color:var(--on-navy-muted);font-size:13.5px}
+  .sidebar nav{display:flex;flex-direction:column;gap:4px}
+  .sidebar nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;color:var(--on-navy-muted);
+    padding:11px 12px;border-radius:10px;font-weight:600;cursor:pointer;font-size:14.5px}
+  .sidebar nav button svg{width:20px;height:20px}
+  .sidebar nav button:hover{background:rgba(255,255,255,.06);color:var(--on-navy)}
+  .sidebar nav button[aria-current="page"]{background:rgba(200,162,74,.16);color:var(--on-navy)}
+  .sidebar nav button[aria-current="page"] svg{color:var(--gold)}
+  .side-foot{margin-top:auto;font-size:12px;color:var(--on-navy-muted);padding:0 8px;display:flex;flex-direction:column;gap:12px}
+  .topbar,.bottomnav{display:none}
+  main{padding-block:28px 48px;padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}
+  body::before{display:none}
+}
+
+/* ---------- Type helpers ---------- */
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+.page-head{display:flex;flex-direction:column;gap:6px}
+.page-head h1{font-family:var(--f-brand);font-weight:600;font-size:clamp(24px,5vw,32px);letter-spacing:.03em}
+.page-head p{color:var(--muted);max-width:62ch}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sec-head h2{font-size:18px;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;border:1px solid transparent;
+  padding:11px 18px;font-weight:700;font-size:14.5px;cursor:pointer;text-decoration:none;line-height:1.2;min-height:44px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-gold{background:var(--gold);color:var(--on-gold)}
+.btn-gold:hover{background:var(--gold-strong)}
+.btn-navy{background:var(--navy);color:var(--on-navy)}
+:root[data-theme="dark"] .btn-navy{border-color:var(--line)}
+.btn-line{background:transparent;border-color:var(--line);color:var(--fg)}
+.btn-line:hover{border-color:var(--gold)}
+.btn-light{background:transparent;border-color:rgba(255,255,255,.45);color:var(--on-navy)}
+.btn-light:hover{border-color:var(--gold)}
+.btn-lg{padding:14px 24px;font-size:16px;min-height:52px}
+.btn-sm{padding:7px 12px;font-size:13px;min-height:36px}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--gold-text);font-weight:700;cursor:pointer;font-size:14px}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Surfaces ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0}
+.grid-2{display:grid;gap:22px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;border-radius:22px;color:var(--on-navy);
+  background:radial-gradient(120% 90% at 85% 0%,var(--hero-2) 0%,var(--hero) 60%);padding:26px 20px 22px;
+  display:flex;flex-direction:column;gap:14px;border:1px solid rgba(200,162,74,.35)}
+.hero::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,162,74,.22),transparent 65%);pointer-events:none}
+.hero .eyebrow{color:var(--gold)}
+.brand-title{font-family:var(--f-brand);font-weight:700;font-size:clamp(30px,8vw,46px);letter-spacing:.06em;line-height:1.05}
+.tagline{font-family:var(--f-scripture);font-style:italic;font-size:17px;color:var(--on-navy-muted)}
+.hero-top{display:flex;gap:14px;align-items:center}
+.next{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;justify-content:space-between;padding:14px;border-radius:14px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);position:relative;z-index:1}
+.next .label{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.next strong{display:block;font-size:16px}
+.next .sub{font-size:13px;color:var(--on-navy-muted)}
+.countdown{display:flex;gap:8px}
+.countdown .u{min-width:52px;text-align:center;padding:6px 4px;border-radius:10px;background:rgba(10,22,48,.55)}
+.countdown b{display:block;font-size:20px;font-variant-numeric:tabular-nums;line-height:1.1}
+.countdown span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-navy-muted)}
+.live{display:inline-flex;align-items:center;gap:8px;font-weight:700;background:rgba(98,210,157,.16);color:#9ff0c6;padding:8px 12px;border-radius:999px}
+.live .dot{width:9px;height:9px;border-radius:50%;background:#62d29d;box-shadow:0 0 0 4px rgba(98,210,157,.25)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;position:relative;z-index:1}
+@media (min-width:760px){.hero{padding:34px 34px 28px}}
+@media (max-width:420px){.hero-actions .btn{flex:1 1 100%}}
+
+/* Scripture card */
+.scripture{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 18px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:12px;min-width:0;border-top:3px solid var(--gold)}
+.scripture blockquote{margin:0;font-family:var(--f-scripture);font-style:italic;font-size:19px;line-height:1.55;color:var(--fg)}
+.scripture blockquote::before{content:"\201C";font-family:var(--f-scripture);color:var(--gold);font-size:46px;line-height:0;vertical-align:-18px;margin-right:4px;font-style:normal}
+.scripture cite{font-style:normal;font-weight:700;font-size:13.5px;letter-spacing:.06em;color:var(--gold-text);text-transform:uppercase}
+.scripture.big blockquote{font-size:clamp(20px,3.6vw,26px)}
+.version{font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* Lists */
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:2px}
+.item .body{flex:1;min-width:0}
+.item h3{font-size:15px;font-weight:700}
+.item p{font-size:13.5px;color:var(--muted)}
+.date-tile{flex:none;width:50px;text-align:center;border-radius:12px;background:var(--surface-2);padding:6px 0 7px}
+.date-tile .d{display:block;font-size:19px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.date-tile .m{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.date-tile.gold{background:var(--gold-wash)}
+.date-tile.gold .m{color:var(--gold-text)}
+.item-click{background:none;border:0;text-align:left;width:100%;cursor:pointer;padding:0;display:flex;gap:14px;align-items:flex-start}
+
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.gold{background:var(--gold-wash);color:var(--gold-text)}
+.pill.ok{background:var(--ok-wash);color:var(--ok)}
+.pill.warn{background:var(--warn-wash);color:var(--warn)}
+.pill.err{background:var(--err-wash);color:var(--err)}
+.pill svg{width:12px;height:12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--muted);align-items:center}
+
+/* Tabs / chips */
+.tabs{display:flex;gap:4px;padding:4px;background:var(--surface-2);border-radius:999px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1 0 auto;border:0;background:none;padding:9px 14px;border-radius:999px;font-weight:700;font-size:13.5px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);padding:6px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--on-navy)}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}}
+
+/* Forms */
+.form{display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.field legend{font-weight:700;font-size:13.5px}
+.field .hint{font-size:12.5px;color:var(--muted)}
+.input,select.input,textarea.input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 13px;min-height:46px}
+textarea.input{min-height:120px;resize:vertical}
+.input:focus{outline:2px solid var(--gold);outline-offset:0;border-color:var(--gold)}
+.input[aria-invalid="true"]{border-color:var(--err)}
+.err-text{color:var(--err);font-size:12.5px;font-weight:600}
+fieldset{border:0;padding:0;margin:0}
+.choice{display:flex;gap:12px;align-items:flex-start;padding:13px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--surface)}
+.choice:has(input:checked){border-color:var(--gold);background:var(--gold-wash)}
+.choice input{margin-top:3px;accent-color:var(--gold-strong);width:18px;height:18px;flex:none}
+.choice b{display:block;font-size:14px}
+.choice span{font-size:12.5px;color:var(--muted)}
+.check{display:flex;gap:10px;align-items:center;font-size:14px;cursor:pointer}
+.check input{accent-color:var(--gold-strong);width:18px;height:18px}
+.form-grid{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:640px){.form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Notices */
+.notice{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border-radius:12px;font-size:13.5px;border:1px solid var(--line);background:var(--surface-2)}
+.notice svg{width:18px;height:18px;flex:none;margin-top:2px}
+.notice.gold{background:var(--gold-wash);border-color:transparent}
+.notice.gold svg{color:var(--gold-text)}
+.notice.warn{background:var(--warn-wash);border-color:transparent;color:var(--fg)}
+.notice.warn svg{color:var(--warn)}
+.notice.err{background:var(--err-wash);border-color:transparent}
+.notice.err svg{color:var(--err)}
+.notice.ok{background:var(--ok-wash);border-color:transparent}
+.notice.ok svg{color:var(--ok)}
+.notice b{display:block}
+
+.empty{text-align:center;padding:30px 18px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted)}
+.empty svg{width:34px;height:34px;color:var(--gold)}
+.empty h3{color:var(--fg);font-size:16px}
+
+/* Skeleton */
+.skel{border-radius:8px;background:linear-gradient(90deg,var(--surface-2) 25%,var(--line) 50%,var(--surface-2) 75%);background-size:300% 100%;animation:shimmer 1.3s ease-in-out infinite}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:0 0}}
+
+/* Prayer wall */
+.wall{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:700px){.wall{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.wall .card{display:flex;flex-direction:column;gap:10px}
+.wall .text{font-family:var(--f-scripture);font-size:15.5px;line-height:1.6}
+.pray-btn{align-self:flex-start}
+.pray-btn[aria-pressed="true"]{background:var(--gold-wash);border-color:var(--gold);color:var(--gold-text)}
+
+/* Devotional */
+.devo h2{font-family:var(--f-brand);font-weight:600;font-size:clamp(21px,4vw,26px);letter-spacing:.02em}
+.devo .part{display:flex;flex-direction:column;gap:6px}
+.devo .part h4{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+.devo .part p{max-width:65ch;font-size:15.5px}
+.devo .prayer{font-family:var(--f-scripture);font-style:italic;font-size:16px;padding-left:14px;border-left:2px solid var(--gold)}
+
+/* Topics */
+details.topic{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+details.topic summary{list-style:none;cursor:pointer;padding:15px 0;display:flex;justify-content:space-between;gap:12px;align-items:center;font-weight:700}
+details.topic summary::-webkit-details-marker{display:none}
+details.topic summary svg{width:18px;height:18px;transition:transform .2s;color:var(--muted)}
+details.topic[open] summary svg{transform:rotate(180deg)}
+details.topic ul{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+details.topic .refs{padding-bottom:16px;display:flex;flex-wrap:wrap;gap:6px}
+
+/* Calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.cal-head h3{font-size:16px}
+.icon-btn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--fg)}
+.icon-btn svg{width:18px;height:18px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .dow{font-size:11px;text-align:center;color:var(--muted);font-weight:700;letter-spacing:.06em;padding-bottom:4px}
+.cal button{aspect-ratio:1/1;max-width:100%;border:1px solid transparent;border-radius:10px;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:14px;font-variant-numeric:tabular-nums;color:var(--fg);padding:0}
+.cal button:hover{background:var(--surface-2)}
+.cal button.today{border-color:var(--gold)}
+.cal button[aria-pressed="true"]{background:var(--navy);color:var(--on-navy)}
+.cal button.past{color:var(--muted)}
+.dots{display:flex;gap:3px;height:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.dots i.ev{background:var(--fg)}
+.cal button[aria-pressed="true"] .dots i.ev{background:var(--on-navy)}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block}
+.legend i.ev{background:var(--fg)}
+
+/* Stats */
+.stats{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:760px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{display:block;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat span{font-size:12.5px;color:var(--muted)}
+
+.admin-banner{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 15px;border-radius:14px;background:var(--warn-wash);border:1px dashed var(--warn)}
+.admin-banner p{font-size:13.5px;flex:1 1 260px}
+.admin-banner b{color:var(--warn)}
+
+/* Modal + toast */
+.overlay{position:fixed;inset:0;z-index:60;background:var(--overlay);display:flex;align-items:flex-end;justify-content:center;
+  padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:88vh;overflow:auto;border-radius:22px 22px 0 0;padding:22px 20px;
+  padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;animation:up .22s ease-out}
+.sheet h2{font-size:20px}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@media (min-width:700px){.overlay{align-items:center}.sheet{border-radius:22px;padding-bottom:22px}}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:var(--surface-2);padding:2px 6px;border-radius:6px;word-break:break-all}
+.toast{position:fixed;z-index:70;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom,0px));
+  background:var(--navy);color:var(--on-navy);padding:11px 16px;border-radius:12px;font-size:14px;display:flex;gap:14px;align-items:center;
+  max-width:calc(100% - 32px);box-shadow:0 8px 30px rgba(0,0,0,.25);border:1px solid rgba(200,162,74,.4)}
+.toast button{background:none;border:0;color:var(--gold);font-weight:700;cursor:pointer;padding:0}
+@media (min-width:960px){.toast{bottom:28px}}
+
+.logo{color:var(--on-navy)}
+.heat{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.heat .dow{font-size:11px;text-align:center;color:var(--muted);font-weight:700}
+.hm{aspect-ratio:1/1;max-width:100%;border-radius:6px;background:var(--surface-2)}
+.hm.l1{background:var(--heat-1)}.hm.l2{background:var(--heat-2)}.hm.l3{background:var(--gold)}
+.hm.lx{background:transparent;border:1px dashed var(--line)}
+.hm.now{outline:2px solid var(--fg);outline-offset:1px}
+.legend i.hm{width:12px;height:12px;border-radius:3px;aspect-ratio:auto}
+.legend i.hm.l0{background:var(--surface-2)}
+.tick{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:var(--on-gold)}
+.tick.on{background:var(--gold);border-color:var(--gold)}
+.tick svg{width:15px;height:15px}
+.testi{display:flex;flex-direction:column;gap:8px;padding:4px 0 4px 14px;border-left:2px solid var(--gold)}
+.testi .text{font-family:var(--f-scripture);font-size:15.5px;line-height:1.6}
+.pay{display:flex;flex-direction:column;gap:10px}
+.pay-head{display:flex;align-items:center;gap:10px}
+.pay-head .badge{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none;letter-spacing:.02em}
+.b-mtn{background:#ffcc00;color:#0a1630}.b-tel{background:#e60000;color:#ffffff}.b-acc{background:#f37021;color:#ffffff}.b-eco{background:#007a99;color:#ffffff}
+.pay-num{font-size:clamp(22px,6.4vw,28px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.04em;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+.pay-name{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pay-grid{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:640px){.pay-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.big-num{font-size:30px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" aria-label="Main">
+    <div class="side-brand">
+      <span class="logo" data-logo="44"></span>
+      <div>
+        <div class="wm">Upon the Altar</div>
+        <div class="tg">A Place of Prayer, A Life of Fire.</div>
+      </div>
+    </div>
+    <nav id="side-nav"></nav>
+    <div class="side-foot">
+      <span>Prayer meetings: Tue &amp; Fri, 9–10 PM Ghana time</span>
+      <span>Bible verses: King James Version</span>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <button class="brand-mini" data-go="home" aria-label="Upon the Altar home">
+        <span class="logo" data-logo="30"></span>
+        <span class="wm">Upon the Altar</span>
+      </button>
+      <span class="spacer"></span>
+      <button class="btn btn-gold btn-sm" data-action="join-top" id="top-join">Join Live</button>
+    </header>
+    <main id="view" tabindex="-1"></main>
+  </div>
+
+  <nav class="bottomnav" id="bottom-nav" aria-label="Main"></nav>
+</div>
+<div id="modal-root"></div>
+<div id="toast-root" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   UPON THE ALTAR — interactive prototype
+   ---------------------------------------------------------------------
+   SETTINGS YOU CAN CHANGE
+   Paste the ministry's real Google Meet link between the quotes below,
+   for example the link Google Meet gives you, which starts with
+   https://meet.google.com/ . Leave it empty until you have it.
+   ===================================================================== */
+const MEET_LINK = "https://meet.google.com/ztx-fvfx-wyf";
+
+/* WhatsApp number that receives prayer requests: country code + number, no "+" or spaces */
+const PRAYER_WHATSAPP = "233591742477";
+const PRAYER_WHATSAPP_DISPLAY = "059 174 2477";
+
+/* Google Sheet that receives member registrations.
+   Paste the Apps Script "Web app" link (it ends in /exec) between the quotes.
+   While it is empty, registrations are sent on WhatsApp instead. */
+const MEMBERS_SHEET_URL = "https://script.google.com/macros/s/AKfycbwKYP0BEuD7v7_cATGXE0wj7XbA67Dw3jvFHmHtUq9Ms6Dtri2RzPh18Q8bZjQ8Rsvteg/exec";
+
+/* Giving accounts shown on the Give page */
+const GIVING_ACCOUNTS = [
+  { kind: "momo", provider: "MTN Mobile Money", badge: "MTN", cls: "b-mtn", number: "059 174 2477", name: "Peter Hostin Dadzie", dial: "*170#" },
+  { kind: "momo", provider: "Telecel Cash", badge: "TC", cls: "b-tel", number: "020 616 1605", name: "Peter Hostin Dadzie", dial: "*110#" },
+  { kind: "bank", provider: "Access Bank", badge: "AB", cls: "b-acc", number: "1047000007056", name: "Peter Hostin Dadzie" },
+  { kind: "bank", provider: "Ecobank", badge: "EB", cls: "b-eco", number: "1441000234609", name: "Peter Hostin Dadzie" }
+];
+const GIVING_TYPES = ["Seed", "Offering", "Tithe", "Thanksgiving", "Other"];
+const GH_REGIONS = ["Ahafo", "Ashanti", "Bono", "Bono East", "Central", "Eastern", "Greater Accra", "North East", "Northern", "Oti", "Savannah", "Upper East", "Upper West", "Volta", "Western", "Western North", "Outside Ghana"];
+const HEARD_FROM = ["Friend or family", "WhatsApp", "Facebook", "TikTok", "YouTube", "A prayer meeting", "Other"];
+
+const MEETING_DAYS = [2, 5];      // 2 = Tuesday, 5 = Friday
+const MEETING_START_HOUR = 21;    // 9 PM Ghana time (Ghana uses GMT all year)
+const MEETING_MINUTES = 60;       // ends 10 PM
+const TZ = "Africa/Accra";
+/* ===================================================================== */
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const DAY = 864e5;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const fmt = (d, o) => new Intl.DateTimeFormat("en-GB", { timeZone: TZ, ...o }).format(d);
+const fDay = d => fmt(d, { weekday: "short", day: "numeric", month: "short" });
+const fLong = d => fmt(d, { weekday: "long", day: "numeric", month: "long" });
+const fTime = d => fmt(d, { hour: "numeric", minute: "2-digit", hour12: true }).replace(/\s?([ap])m/i, (m, x) => " " + x.toUpperCase() + "M");
+const fLocalTime = d => new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(d);
+const keyOf = d => d.toISOString().slice(0, 10);           // Ghana date = UTC date
+const startOfDay = d => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+const viewerOutsideGhana = new Date().getTimezoneOffset() !== 0;
+const daysAgo = n => new Date(Date.now() - n * DAY);
+function nextDow(dow, minDays) { let d = new Date(startOfDay(new Date()).getTime() + minDays * DAY); while (d.getUTCDay() !== dow) d = new Date(d.getTime() + DAY); return d; }
+function at(day, h, m = 0) { return new Date(day.getTime() + h * 3600e3 + m * 6e4); }
+function ago(d) {
+  const diff = Math.round((startOfDay(new Date()) - startOfDay(d)) / DAY);
+  if (diff <= 0) return "Today"; if (diff === 1) return "Yesterday"; if (diff < 7) return diff + " days ago";
+  if (diff < 30) { const w = Math.round(diff / 7); return w + (w === 1 ? " week ago" : " weeks ago"); }
+  return fmt(d, { day: "numeric", month: "short", year: "numeric" });
+}
+function dayOfYear() { const n = new Date(); return Math.floor((startOfDay(n) - Date.UTC(n.getUTCFullYear(), 0, 0)) / DAY); }
+const MEET_RE = /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}(\?[^\s]*)?$/i;
+
+/* ---------- Icons ---------- */
+const I = {
+  home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  flame: '<path d="M12 3c2 4 6 6 6 11a6 6 0 0 1-12 0c0-3 1.5-5 3-6.5 0 2 1 3.5 2 4-1-3.5 0-6.5 1-8.5z"/>',
+  cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  book: '<path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+  video: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
+  send: '<path d="M4 12l16-8-6 16-2-7z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  alert: '<path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17v.5"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  hands: '<path d="M12 21V9.5L9 4.5c-.8-1.3-2.8-.6-2.5 1L8 11l-3 4v3l4 3M12 21V9.5l3-5c.8-1.3 2.8-.6 2.5 1L16 11l3 4v3l-4 3"/>',
+  mega: '<path d="M3 10v4l11 5V5z"/><path d="M14 8a4 4 0 0 1 0 8M7 15l1.5 5"/>',
+  play: '<circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  left: '<path d="M15 5l-7 7 7 7"/>',
+  right: '<path d="M9 5l7 7-7 7"/>',
+  down: '<path d="M6 9l6 6 6-6"/>',
+  eyeoff: '<path d="M3 3l18 18M10.6 6.2A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-2.6 3.2M6.5 7.6C4.3 9.2 3 12 3 12s4 6 9 6a8.6 8.6 0 0 0 4-1"/>',
+  eye: '<path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/>',
+  journal: '<path d="M6 3h11a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1z"/><path d="M9 8h6M9 12h6"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  spark: '<path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',
+  gift: '<rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 3.5 6.5 8 12 8zM12 8s1.5-5 4-4.5S17.5 8 12 8z"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
+  phone: '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>',
+  userplus: '<circle cx="10" cy="8" r="4"/><path d="M3 21c1.4-3.8 4-5.5 7-5.5s5.6 1.7 7 5.5M19 8v6M16 11h6"/>',
+  wifi: '<path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><path d="M12 19.5v.5"/>'
+};
+const ic = (n, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+const LOGO = s => `<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true">
+  <path d="M24 3c3.2 6.4 9.5 9.3 9.5 17.6a9.5 9.5 0 0 1-19 0c0-4.3 2.1-7.4 4.3-9.6 0 3 1.1 5.2 3.2 6.4-1.1-5.3 0-10.6 2-14.4z" fill="var(--gold)"/>
+  <path d="M24 16.5c2 3.1 4.2 4.4 4.2 8.3a4.2 4.2 0 0 1-8.4 0c0-2.1 1-3.3 2-4.3 0 1.2.8 2.1 1.9 2.4-.5-2.2 0-4.4.3-6.4z" fill="var(--flame-inner)"/>
+  <rect x="7" y="32" width="34" height="4" rx="1.2" fill="currentColor"/>
+  <path d="M11 37.5h26l-2.2 7H13.2z" fill="currentColor" opacity=".72"/></svg>`;
+
+/* ---------- Content (KJV scripture is public domain; everything else is sample text) ---------- */
+const VERSES = [
+  ["Leviticus 6:13", "The fire shall ever be burning upon the altar; it shall never go out."],
+  ["Psalm 141:2", "Let my prayer be set forth before thee as incense; and the lifting up of my hands as the evening sacrifice."],
+  ["Jeremiah 33:3", "Call unto me, and I will answer thee, and shew thee great and mighty things, which thou knowest not."],
+  ["Philippians 4:6", "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God."],
+  ["James 5:16", "The effectual fervent prayer of a righteous man availeth much."],
+  ["Isaiah 40:31", "But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint."],
+  ["Matthew 18:20", "For where two or three are gathered together in my name, there am I in the midst of them."],
+  ["Romans 12:1", "I beseech you therefore, brethren, by the mercies of God, that ye present your bodies a living sacrifice, holy, acceptable unto God, which is your reasonable service."],
+  ["1 Thessalonians 5:17", "Pray without ceasing."],
+  ["Hebrews 4:16", "Let us therefore come boldly unto the throne of grace, that we may obtain mercy, and find grace to help in time of need."],
+  ["2 Chronicles 7:14", "If my people, which are called by my name, shall humble themselves, and pray, and seek my face, and turn from their wicked ways; then will I hear from heaven, and will forgive their sin, and will heal their land."],
+  ["Matthew 21:22", "And all things, whatsoever ye shall ask in prayer, believing, ye shall receive."],
+  ["Acts 2:3", "And there appeared unto them cloven tongues like as of fire, and it sat upon each of them."],
+  ["Romans 12:12", "Rejoicing in hope; patient in tribulation; continuing instant in prayer."]
+];
+
+const DEVOTIONALS = [
+  { id: "d1", title: "Keep the Fire Burning", ref: "Leviticus 6:13", text: VERSES[0][1],
+    reflection: "In the tabernacle, the priests added wood to the altar every morning. The fire did not stay alive by accident; it was tended. Our prayer life works the same way. A strong season of prayer last month will not carry us through this one. God lights the fire, and He invites us to keep bringing fresh wood: a set time, an open Bible, an honest heart. Small, faithful offerings keep the flame steady when feelings rise and fall.",
+    prayer: "Lord, You lit the fire in my heart. Teach me to tend it daily. Where my prayer life has grown cold, breathe on it again. Let my life be an altar where Your fire never goes out. In Jesus' name, Amen." },
+  { id: "d2", title: "An Evening Offering", ref: "Psalm 141:2", text: VERSES[1][1],
+    reflection: "David asked that his evening prayer would rise to God like incense. At the end of a long day we often feel we have nothing left to give. Yet tired hands lifted in worship are still an offering God receives. When we gather on Tuesday and Friday nights, we bring the whole day to Him: what went well, what went wrong, and what we could not finish. He turns ordinary evenings into holy ground.",
+    prayer: "Father, receive my prayer tonight as sweet incense. I lift tired hands to You and give You this day. Restore my strength as I rest, and meet us as we gather to pray. Amen." },
+  { id: "d3", title: "Call, and He Will Answer", ref: "Jeremiah 33:3", text: VERSES[2][1],
+    reflection: "Jeremiah heard these words while he was shut up in prison. His situation looked closed, but heaven was open. God's invitation is simple: call. He does not ask us to have the answer first. He promises to show us things we do not yet know. Whatever door looks shut in your life today, take it to Him in prayer before you take it anywhere else.",
+    prayer: "Lord, I call to You today about the things I cannot see a way through. Show me what I do not know. Open my eyes to Your answers and give me patience to wait for them. Amen." },
+  { id: "d4", title: "Peace in Place of Worry", ref: "Philippians 4:6", text: VERSES[3][1],
+    reflection: "Paul does not say our problems are small. He says to bring every one of them to God, with thanksgiving. Thanksgiving changes the posture of our hearts: it reminds us of what God has already done, so we can trust Him with what we still need. The verses that follow promise a peace that guards the heart and mind. Worry shrinks when it is spoken out loud in prayer.",
+    prayer: "Father, I give You the things that are troubling me today. Thank You for every past answer. Guard my heart and mind with Your peace, which passes all understanding. Amen." },
+  { id: "d5", title: "Strength for the Waiting Season", ref: "Isaiah 40:31", text: VERSES[5][1],
+    reflection: "Waiting is rarely our favourite part of faith. Yet Isaiah says those who wait on the Lord are the ones whose strength is renewed. Waiting on God is not doing nothing; it is staying close to Him while the answer forms. Some days we soar, some days we run, and some days we simply keep walking. All three are victories when we walk with Him.",
+    prayer: "Lord, I choose to wait on You. Renew my strength in this season. When I cannot soar, help me keep walking without fainting, trusting Your timing. Amen." },
+  { id: "d6", title: "Where Two or Three Gather", ref: "Matthew 18:20", text: VERSES[6][1],
+    reflection: "Jesus attached a special promise to gathered prayer: He is in the midst. An online meeting can feel small: a few faces on a screen, someone's connection dropping. But the size of the gathering does not limit the presence of the Lord. When we join our voices, even from different towns, we are not just a group chat. We are the church at prayer, and He is with us.",
+    prayer: "Lord Jesus, thank You for promising to be with us when we gather. Unite our hearts as we pray together, wherever we are joining from. Amen." },
+  { id: "d7", title: "A Living Sacrifice", ref: "Romans 12:1", text: VERSES[7][1],
+    reflection: "In the Old Testament, an offering was placed on the altar once. Paul calls us to something harder: to be a living sacrifice, placed on the altar every day. That means our time, our work, our words and our choices all belong to God. Our worship is not only what happens in a service; it is how we live on Monday morning.",
+    prayer: "Father, by Your mercy I place my life on Your altar again today. Take my time, my work and my words, and use them for Your glory. Amen." }
+];
+
+const TOPICS = [
+  { name: "Personal revival", points: ["A fresh hunger for God's presence and His Word", "Consistency in personal prayer and fasting", "Holiness in thought, word and action"], refs: ["Psalm 51:10", "Leviticus 6:13", "Habakkuk 3:2"] },
+  { name: "Family & marriage", points: ["Peace, love and unity in our homes", "Salvation of family members who do not yet know Christ", "Wisdom for parents and protection over children"], refs: ["Joshua 24:15", "Psalm 127:1", "Acts 16:31"] },
+  { name: "Ghana & the nations", points: ["Wisdom and integrity for leaders", "Peace, justice and fair opportunity for all", "Revival across the nation and the continent"], refs: ["2 Chronicles 7:14", "1 Timothy 2:1-2", "Psalm 33:12"] },
+  { name: "Healing & health", points: ["Healing for the sick in our fellowship", "Strength and wisdom for doctors, nurses and carers", "Emotional and mental healing"], refs: ["James 5:14-15", "Jeremiah 17:14", "Psalm 103:2-3"] },
+  { name: "Work, finances & provision", points: ["Jobs and open doors for those searching", "Favour and integrity in business", "Freedom from debt and wise stewardship"], refs: ["Philippians 4:19", "Deuteronomy 8:18", "Proverbs 3:9-10"] },
+  { name: "Youth & the next generation", points: ["Young people grounded in Christ", "Students in exams and further studies", "Mentors and godly friendships"], refs: ["Psalm 78:4", "1 Timothy 4:12", "Ecclesiastes 12:1"] },
+  { name: "The church & missions", points: ["Labourers for the harvest", "Boldness to share the gospel", "Unity and love in the body of Christ"], refs: ["Matthew 9:37-38", "Acts 4:31", "John 17:21"] }
+];
+const CATEGORIES = ["Healing", "Family", "Work & finances", "Studies", "Spiritual growth", "Thanksgiving", "Other"];
+
+const SERMON_NOTES = [{"h": "Introduction", "p": ["Turn with me to 1 Samuel chapter 30. I want to talk to you tonight about a man who came home to ashes.", "David and his men had been away fighting. When they finally made their way back to Ziklag, the place they called home, they found smoke still rising from the ruins. The city was burned to the ground. Their wives, their sons, their daughters, all of them gone, taken captive by the Amalekites. Verse 4 says David and his men \"lifted up their voice and wept, until they had no more power to weep.\"", "Church, have you ever cried until you couldn't cry anymore? Have you ever come home, to a relationship, a job, a season of life, and found nothing but ashes where something beautiful used to stand?", "That's where David is in this text. But notice something before we go any further: this isn't the end of David's story. This is the setup for one of the greatest comebacks in all of Scripture. And if you came in tonight standing in your own Ziklag, I believe God brought you here to show you how to walk out of the ashes and into total recovery.", "Let's look at four things David did, and four things you're going to have to do, to recover everything the enemy thought he took from you for good."]}, {"h": "1. Before you can recover anything, you must strengthen yourself in the Lord", "p": ["Verse 6: \"And David was greatly distressed; for the people spake of stoning him, because the soul of all the people was grieved, every man for his sons and for his daughters: but David encouraged himself in the LORD his God.\"", "David didn't just lose his home. He didn't just lose his family. In the middle of his own grief, the very men who fought beside him turned on him. They were talking about stoning him. In his lowest moment, David was completely alone.", "No prophet showed up to encourage him. No friend put a hand on his shoulder. The Bible doesn't say \"and Abiathar the priest encouraged David\". It says David encouraged himself. In the Hebrew, that word means he \"fastened himself\" to God, like a man grabbing hold of something solid when everything around him is shaking.", "Some of you are waiting on somebody to come rebuild your courage: a phone call, a text message, an apology, a friend to check on you. And while you're waiting, you're sinking deeper into the ashes.", "Do what David did. Find a quiet place. Remind yourself who God said you are. Remind yourself of every promise He's ever kept. The same God who brought you through the last valley is still on the throne in this one.", "If you wait for permission from people before you recover, you will wait forever. But if you learn to encourage yourself in the Lord, you don't need anybody's permission to get back up."]}, {"h": "2. Don't move until you inquire of God", "p": ["Verses 7 and 8: David called for the priest, brought the ephod, and \"David enquired at the LORD, saying, Shall I pursue after this troop? shall I overtake them?\"", "David didn't just grab his sword and run into the desert out of rage and grief. Before he moved one step, he asked God two specific questions: Should I even pursue? And if I do, will I actually catch them?", "That's the difference between desperation without direction and desperation with direction. Desperation without direction will have you making decisions out of hurt that you'll regret for years: texting people you shouldn't text, quitting things you shouldn't quit, saying things you can't take back.", "Desperation with direction says, \"God, before I act on this pain, tell me what to do with it.\" And God didn't just say \"go.\" He said, \"Pursue: for thou shalt surely overtake them, and without fail recover all.\" God gave him the direction and the guarantee.", "Before you make your next move in your marriage, your finances, your ministry or your next season, inquire of the Lord. When God gives the direction, He also gives the guarantee."]}, {"h": "3. God doesn't just restore: He says \"you shall surely recover all\"", "p": ["Verse 8: \"pursue: for thou shalt surely overtake them, and without fail recover all.\"", "God didn't say you'll recover something, or most of it, or enough to get by. He said ALL. God is not in the business of partial restoration. Some of you have settled for scraps: a little of your joy back, a little of your finances back. God is saying tonight: I didn't call you to settle for a fraction of what the enemy stole.", "Whatever the enemy has taken, your peace, your confidence, your health, your family, your years, your joy, your ministry, your finances: you shall surely recover it. Without fail.", "Verses 18 and 19: \"And David recovered all that the Amalekites had carried away... and there was nothing lacking to them, neither small nor great, neither sons nor daughters, neither spoil, nor any thing that they had taken to them: David recovered all.\" Nothing lacking. That is total recovery, and what God did for David, He is still doing today."]}, {"h": "4. Your comeback will silence the ones who wanted to stone you", "p": ["Remember the men in verse 6 who were talking about stoning David? By verse 10, four hundred of them are marching right alongside David into the recovery. The same people who wanted to end him were fighting next to him in the victory.", "Some of you have people watching you in your Ziklag season, whispering about you, writing you off. Don't waste your energy defending yourself. Just recover. Let your breakthrough do the talking, and let God turn your ashes into a testimony."]}, {"h": "Closing and altar call", "p": ["Maybe your city got burned by a divorce, a diagnosis, betrayal, debt or disappointment. Maybe the people who should have encouraged you have turned away instead.", "Ziklag is not your final address. It's the place where you learn to strengthen yourself in the Lord, where you learn to inquire before you act, and where God says, \"You shall surely recover all.\"", "Lift your hands and pray: \"God, I strengthen myself in You right now. I will not wait on people to rebuild my courage. I inquire of You: show me the way forward. And I receive Your word tonight: I shall surely recover all.\"", "If you need someone to agree with you in prayer for total recovery, don't wait. Your breakthrough starts the moment you get up."]}];
+function loadJournal() { try { const raw = localStorage.getItem("uta-journal"); return raw ? JSON.parse(raw).map(j => ({ ...j, date: new Date(j.date) })) : []; } catch (e) { return []; } }
+function saveJournal() { try { localStorage.setItem("uta-journal", JSON.stringify(state.journal)); return true; } catch (e) { return false; } }
+
+/* =====================================================================
+   PUBLISHED TESTIMONIES
+   Leaders: only publish testimonies the person gave permission to share.
+   To add one, copy the example line, remove the two slashes at its start,
+   and fill in the details. Dates are written year-month-day.
+   ===================================================================== */
+const TESTIMONIES = [
+  // { name: "First name", date: "2026-10-22", title: "Short headline", text: "What God did, in their words." },
+  { name: "A grateful husband and father", date: "", title: "A safe delivery: a baby boy", text: "By the special grace of God, my wife has safely delivered a baby boy. We are eternally grateful for your immeasurable support and prayers throughout her pregnancy till delivery. We humbly ask that you continue to remember our family in prayer. May the Almighty God richly bless you and strengthen you, and may the whole world hear of the great things God is doing. Thank you so much." },
+  { name: "Anonymous", date: "", title: "Financial breakthrough", text: "Last week when you prayed for financial blessings, I connected, and for the first time my uncle in the USA, who has been there 10 years, sent me USD 5,000 and has sent me an invite. I just couldn't believe it, so I waited to be sure he hadn't made a mistake. God is real! Thank you so much." },
+  { name: "Anonymous", date: "", title: "Pregnant after 5 years of waiting", text: "You told me I would get pregnant before the end of May. I am pregnant by God's grace after 5 years of no child in marriage. I have checked 5 times to be sure, and God has done it! Thank you so much." },
+];
+const sortedTestimonies = () => TESTIMONIES.slice().sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+
+/* ---------- My prayer life: activity saved only on this phone ---------- */
+function loadActivity() { try { return JSON.parse(localStorage.getItem("uta-activity") || "{}") || {}; } catch (e) { return {}; } }
+const activity = loadActivity();
+function logActivity(type, on = true) {
+  const k = keyOf(new Date()); activity[k] = activity[k] || {};
+  if (on) activity[k][type] = true; else delete activity[k][type];
+  try { localStorage.setItem("uta-activity", JSON.stringify(activity)); } catch (e) {}
+}
+const did = (k, type) => !!(activity[k] && activity[k][type]);
+const activeDay = k => !!activity[k] && Object.keys(activity[k]).length > 0;
+function streak() { let d = startOfDay(new Date()); if (!activeDay(keyOf(d))) d = new Date(d - DAY); let n = 0; while (activeDay(keyOf(d))) { n++; d = new Date(d - DAY); } return n; }
+function recordJoin() { const m = nextMeeting(); if (new Date() >= new Date(m.start - 30 * 6e4)) logActivity("meeting"); }
+function sampleData() {
+  return {
+    requests: [], journal: loadJournal(), announcements: [], events: [],
+    sermons: [{ id: "s-recover-all", title: "Recover All", speaker: "", cat: "Faith", series: "", scripture: "1 Samuel 30:1-19", date: null, mins: 0, notes: true,
+      summary: "David came home to ashes at Ziklag. Four steps to walk out of the ashes: strengthen yourself in the Lord, inquire of God before you move, believe Him for total recovery, and let your comeback do the talking." }]
+  };
+}
+
+/* ---------- State (in memory only: resets on reload) ---------- */
+const data = sampleData();
+const state = {
+  view: "home", prayerTab: "request", wordTab: "today", adminTab: "overview", admin: false,
+  meetLink: MEET_LINK.trim(), ...data, devotionals: DEVOTIONALS.slice(), featuredDev: null,
+  wallFilter: "All", sermonQuery: "", sermonCat: "All",
+  sermonsLoaded: true, sermonsLoading: false, sermonError: false,
+  cal: { y: new Date().getUTCFullYear(), m: new Date().getUTCMonth() }, calSel: keyOf(new Date()),
+  reqDone: null, prayed: new Set(), formErrors: {}
+};
+
+/* ---------- Meetings logic ---------- */
+function regularMeetings(from, count) {
+  const out = []; let d = startOfDay(from);
+  for (let i = 0; out.length < count && i < 400; i++) {
+    if (MEETING_DAYS.includes(d.getUTCDay())) {
+      const s = at(d, MEETING_START_HOUR), e = new Date(s.getTime() + MEETING_MINUTES * 6e4);
+      if (e > from) out.push({ id: "reg-" + keyOf(d), title: (d.getUTCDay() === 2 ? "Tuesday" : "Friday") + " Online Prayer Meeting", start: s, end: e, regular: true, place: "Online · Google Meet", desc: "Our regular online prayer meeting. Worship, a short word, and intercession for requests and the nation." });
+    }
+    d = new Date(d.getTime() + DAY);
+  }
+  return out;
+}
+const nextMeeting = () => regularMeetings(new Date(), 1)[0];
+function upcoming(n) {
+  const now = new Date();
+  return [...regularMeetings(now, n), ...state.events.filter(e => e.end > now)].sort((a, b) => a.start - b.start).slice(0, n);
+}
+function itemsOnDay(key) {
+  const d = new Date(key + "T00:00:00Z"); const out = [];
+  if (MEETING_DAYS.includes(d.getUTCDay())) { const s = at(d, MEETING_START_HOUR); out.push({ title: (d.getUTCDay() === 2 ? "Tuesday" : "Friday") + " Online Prayer Meeting", start: s, end: new Date(s.getTime() + MEETING_MINUTES * 6e4), regular: true, place: "Online · Google Meet", desc: "Our regular online prayer meeting." }); }
+  state.events.forEach(e => { if (keyOf(e.start) <= key && key <= keyOf(new Date(e.end.getTime() - 1))) out.push(e); });
+  return out.sort((a, b) => a.start - b.start);
+}
+const multiDay = e => (e.end - e.start) > DAY;
+const timeRange = e => multiDay(e) ? fDay(e.start) + " – " + fDay(e.end) + ", daily" : fTime(e.start) + " – " + fTime(e.end) + " Ghana time" + (viewerOutsideGhana ? ` <span class="muted">(${fLocalTime(e.start)} your time)</span>` : "");
+
+/* ---------- Devotional / verse of the day ---------- */
+const todayVerse = () => VERSES[dayOfYear() % VERSES.length];
+const todayDevo = () => state.devotionals.find(d => d.id === state.featuredDev) || DEVOTIONALS[dayOfYear() % DEVOTIONALS.length];
+
+/* ---------- Reusable components ---------- */
+function joinBtn(size = "") {
+  if (MEET_RE.test(state.meetLink)) return `<a class="btn btn-gold ${size}" data-join href="${esc(state.meetLink)}" target="_blank" rel="noopener">${ic("video")}Join Live Prayer</a>`;
+  return `<button class="btn btn-gold ${size}" data-action="meet-missing">${ic("video")}Join Live Prayer</button>`;
+}
+function verseCard(v, big = false) {
+  return `<article class="scripture ${big ? "big" : ""}"><span class="eyebrow">Verse of the day</span><blockquote>${esc(v[1])}</blockquote>
+    <div class="row" style="justify-content:space-between"><cite>${esc(v[0])}</cite><span class="version">KJV</span></div></article>`;
+}
+function dateTile(d, gold) { return `<div class="date-tile ${gold ? "gold" : ""}"><span class="d">${fmt(d, { day: "numeric" })}</span><span class="m">${fmt(d, { month: "short" })}</span></div>`; }
+function meetingItem(e) {
+  return `<div class="item"><button class="item-click" data-action="event" data-id="${esc(e.id || "")}" data-start="${e.start.toISOString()}">
+    ${dateTile(e.start, e.regular)}<div class="body"><h3>${esc(e.title)}</h3><p>${multiDay(e) ? "" : fmt(e.start, { weekday: "long" }) + " · "}${timeRange(e)}</p>
+    <div class="meta" style="margin-top:4px">${e.regular ? '<span class="pill gold">Weekly</span>' : '<span class="pill">Special event</span>'}<span>${esc(e.place)}</span></div></div></button></div>`;
+}
+function sermonItem(s) {
+  const bits = [s.speaker, s.scripture, s.mins ? s.mins + " min" : "", s.date ? ago(s.date) : ""].filter(Boolean).map(esc).join(" · ");
+  return `<div class="item"><div class="body"><div class="meta"><span class="pill gold">${esc(s.cat)}</span>${s.series ? `<span>${esc(s.series)}</span>` : ""}</div>
+    <h3 style="margin-top:6px">${esc(s.title)}</h3><p>${bits}</p>
+    <p style="margin-top:4px">${esc(s.summary)}</p>
+    ${s.notes ? `<button class="btn btn-line btn-sm" style="margin-top:8px" data-action="notes" data-id="${s.id}">${ic("book")}Read sermon notes</button>` : ""}</div></div>`;
+}
+function annItem(a, admin) {
+  return `<div class="item"><span class="date-tile gold" style="display:grid;place-items:center;height:44px;width:44px">${ic("mega")}</span>
+    <div class="body"><div class="meta">${a.pinned ? '<span class="pill gold">Pinned</span>' : ""}<span>${ago(a.date)}</span></div>
+    <h3 style="margin-top:4px">${esc(a.title)}</h3><p>${esc(a.body)}</p></div>
+    ${admin ? `<button class="icon-btn" data-action="del-ann" data-id="${a.id}" aria-label="Delete announcement">${ic("trash")}</button>` : ""}</div>`;
+}
+const sortedAnns = () => state.announcements.slice().sort((a, b) => (b.pinned - a.pinned) || (b.date - a.date));
+function empty(icon, title, text, action = "") { return `<div class="empty">${ic(icon)}<h3>${title}</h3><p>${text}</p>${action}</div>`; }
+function tabs(name, items, current) {
+  return `<div class="tabs" role="tablist">${items.map(([k, l]) => `<button role="tab" aria-selected="${k === current}" data-tab-set="${name}" data-tab="${k}">${l}</button>`).join("")}</div>`;
+}
+function pageHead(eyebrow, title, text) { return `<div class="page-head"><span class="eyebrow">${eyebrow}</span><h1>${title}</h1>${text ? `<p>${text}</p>` : ""}</div>`; }
+
+/* ---------- Views ---------- */
+function viewHome() {
+  const nm = nextMeeting(), v = todayVerse(), dv = todayDevo();
+  return `<div class="view">
+  <section class="hero" aria-labelledby="h-title">
+    <div class="hero-top"><span class="logo">${LOGO(52)}</span><span class="eyebrow">Prayer Ministry</span></div>
+    <div><h1 class="brand-title" id="h-title">Upon the Altar</h1><p class="tagline">A Place of Prayer, A Life of Fire.</p></div>
+    <div class="next"><div><span class="label">Next prayer meeting</span><strong>${fLong(nm.start)}</strong>
+      <span class="sub">${fTime(nm.start)} – ${fTime(nm.end)} Ghana time${viewerOutsideGhana ? " · " + fLocalTime(nm.start) + " your time" : ""}</span></div>
+      <div class="countdown" data-countdown></div></div>
+    <div class="hero-actions">${joinBtn("btn-lg")}<button class="btn btn-light btn-lg" data-go="prayer" data-tab="request">${ic("send")}Submit a Prayer Request</button></div>
+  </section>
+
+  <div class="grid-2">
+    ${verseCard(v)}
+    <article class="card stack"><span class="eyebrow">Today's devotional</span>
+      <h2 style="font-family:var(--f-brand);font-weight:600;font-size:21px">${esc(dv.title)}</h2>
+      <p class="muted small">${esc(dv.ref)}</p>
+      <p>${esc(dv.reflection.split(". ").slice(0, 2).join(". "))}.</p>
+      <div><button class="btn btn-line btn-sm" data-go="word" data-tab="today">Read today's devotional</button></div></article>
+  </div>
+
+  <div class="grid-2">
+    <section class="card"><div class="sec-head"><h2>Testimonies</h2><button class="link" data-go="prayer" data-tab="testimonies">${TESTIMONIES.length ? "See all" : "Share yours"}</button></div>
+      ${TESTIMONIES.length ? `<div class="stack" style="gap:14px">${sortedTestimonies().slice(0, 2).map(testimonyCard).join("")}</div>` : `<p class="muted">No testimonies published yet. Has God answered your prayer? Share it so we can rejoice together.</p>`}</section>
+    <section class="card stack"><div class="sec-head" style="margin:0"><h2>My prayer life</h2><button class="link" data-go="me">Open</button></div>
+      <div class="row" style="gap:16px;flex-wrap:nowrap"><div><span class="big-num">${streak()}</span><span class="muted small" style="display:block">day streak</span></div>
+        <p class="small muted" style="flex:1;min-width:0">${did(keyOf(new Date()), "prayed") ? "You've checked in today. Keep the fire burning." : "Have you prayed today? Check in to keep your streak going."}</p></div>
+      ${did(keyOf(new Date()), "prayed") ? "" : `<div><button class="btn btn-navy btn-sm" data-action="checkin" data-v="1">${ic("flame")}I prayed today</button></div>`}</section>
+  </div>
+
+  <div class="grid-2">
+    <section class="card stack"><div class="row" style="gap:12px;flex-wrap:nowrap"><span class="date-tile gold" style="display:grid;place-items:center;height:44px;width:44px;flex:none">${ic("gift")}</span>
+      <div style="min-width:0"><h2 style="font-size:17px">Give a seed or offering</h2><p class="muted small">Mobile Money and bank transfer details.</p></div></div>
+      <div><button class="btn btn-navy btn-sm" data-go="give">Give now</button></div></section>
+    <section class="card stack"><div class="row" style="gap:12px;flex-wrap:nowrap"><span class="date-tile gold" style="display:grid;place-items:center;height:44px;width:44px;flex:none">${ic("userplus")}</span>
+      <div style="min-width:0"><h2 style="font-size:17px">Become a member</h2><p class="muted small">Join the Upon the Altar family.</p></div></div>
+      <div><button class="btn btn-line btn-sm" data-go="join">Register</button></div></section>
+  </div>
+
+  <section class="card"><div class="sec-head"><h2>Upcoming prayer meetings</h2><button class="link" data-go="meetings">Full calendar</button></div>
+    <div class="list">${upcoming(4).map(meetingItem).join("")}</div></section>
+
+  <div class="grid-2">
+    <section class="card"><div class="sec-head"><h2>Latest sermons</h2><button class="link" data-go="word" data-tab="library">Library</button></div>
+      <div class="list">${state.sermons.slice().sort((a, b) => b.date - a.date).slice(0, 3).map(sermonItem).join("")}</div></section>
+    <section class="card"><div class="sec-head"><h2>Announcements</h2></div>
+      <div class="list">${state.announcements.length ? sortedAnns().slice(0, 3).map(a => annItem(a)).join("") : empty("mega", "No announcements", "New announcements from the ministry will appear here.")}</div></section>
+  </div>
+  </div>`;
+}
+
+function viewPrayer() {
+  const t = state.prayerTab;
+  let body = "";
+  if (t === "request") body = prayerForm();
+  if (t === "wall") body = prayerWall();
+  if (t === "testimonies") body = testimonies();
+  if (t === "journal") body = journal();
+  return `<div class="view">${pageHead("Prayer", "Bring it to the altar", "Send a prayer request, share what God has done, or keep your own prayer journal.")}
+    ${tabs("prayer", [["request", "Prayer request"], ["testimonies", "Testimonies"], ["wall", "Prayer Wall"], ["journal", "My journal"]], t)}${body}</div>`;
+}
+
+function prayerForm() {
+  if (state.reqDone) {
+    const d = state.reqDone, priv = d.vis === "private";
+    return `<section class="card stack" style="max-width:640px">
+      <span class="eyebrow">One more step</span><h2 style="font-size:20px">Send your request on WhatsApp</h2>
+      <p>Tap the button below. WhatsApp opens with your request already written. Then tap <b>Send</b> in WhatsApp to deliver it to the Upon the Altar prayer leader.</p>
+      <div><a class="btn btn-gold btn-lg" href="${esc(d.url)}" target="_blank" rel="noopener">${ic("send")}Open WhatsApp to send</a></div>
+      <div class="notice">${ic(priv ? "lock" : "hands")}<div><b>${priv ? "Private request" : "Shareable request"}</b>It goes from your own WhatsApp straight to the prayer leader${priv ? " and is marked private" : ", marked as okay to share with the prayer group"}. This app does not store it.</div></div>
+      <details><summary class="small muted" style="cursor:pointer">WhatsApp didn't open?</summary>
+        <div class="stack" style="margin-top:10px"><p class="small">Send this message on WhatsApp to <b>${PRAYER_WHATSAPP_DISPLAY}</b>:</p>
+        <pre style="white-space:pre-wrap;font-family:var(--f-ui);font-size:13px;background:var(--surface-2);padding:12px;border-radius:10px;margin:0">${esc(d.msg)}</pre>
+        <div><button class="btn btn-line btn-sm" data-action="copy-req">Copy message</button></div></div></details>
+      <div class="row"><button class="btn btn-line" data-action="req-again">Write another request</button></div></section>`;
+  }
+  const e = state.formErrors;
+  return `<form class="card form" id="f-request" novalidate style="max-width:640px">
+    ${Object.keys(e).length ? `<div class="notice err" role="alert">${ic("alert")}<div><b>Please check the form.</b>${Object.values(e).map(esc).join(" ")}</div></div>` : ""}
+    <div class="form-grid two">
+      <div class="field"><label for="req-name">Your first name</label><input class="input" id="req-name" name="name" autocomplete="given-name" maxlength="40" placeholder="Optional">
+        <span class="hint">Leave blank to stay anonymous.</span></div>
+      <div class="field"><label for="req-cat">Category</label><select class="input" id="req-cat" name="category">${CATEGORIES.map(c => `<option>${c}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label for="req-text">Your prayer request</label>
+      <textarea class="input" id="req-text" name="text" maxlength="600" ${e.text ? 'aria-invalid="true" aria-describedby="req-text-err"' : ""} placeholder="Share what you would like us to pray about."></textarea>
+      <div class="row" style="justify-content:space-between">${e.text ? `<span class="err-text" id="req-text-err">${esc(e.text)}</span>` : "<span></span>"}<span class="hint tnum" id="req-count">0 / 600</span></div></div>
+    <fieldset class="field"><legend>Who can see this request?</legend>
+      <div class="stack" style="gap:8px;margin-top:6px">
+        <label class="choice"><input type="radio" name="vis" value="private" checked><div><b>Private: prayer leader only</b><span>Only the prayer leader receives it, marked private.</span></div></label>
+        <label class="choice"><input type="radio" name="vis" value="public"><div><b>Okay to share with the prayer group</b><span>The prayer leader may share it so more people can pray with you.</span></div></label>
+      </div></fieldset>
+    <p class="hint small muted">Your request is sent through WhatsApp from your own phone. Please don't include other people's private details.</p>
+    <div><button class="btn btn-gold btn-lg" type="submit" id="req-submit">${ic("send")}Continue</button></div>
+  </form>`;
+}
+
+function prayerWall() {
+  return `<div class="card">${empty("hands", "The Prayer Wall is coming soon", "Soon members will be able to share requests here and pray for one another. For now, send your request to the prayer leader and we will pray with you.", `<button class="btn btn-gold btn-sm" data-tab-set="prayer" data-tab="request">Submit a prayer request</button>`)}</div>`;
+}
+
+function journal() {
+  const list = state.journal.slice().sort((a, b) => b.date - a.date);
+  return `<div class="notice">${ic("lock")}<div><b>Your journal stays on this phone.</b>Entries are saved only in this browser on this device. Nobody else can see them, and they are not backed up, so clearing your browser data removes them.</div></div>
+  <div class="grid-2" style="align-items:start">
+    <form class="card form" id="f-journal" novalidate><h2 style="font-size:17px">New entry</h2>
+      <div class="field"><label for="j-title">Title</label><input class="input" id="j-title" maxlength="80" placeholder="e.g. Praying for my exams"></div>
+      <div class="field"><label for="j-text">What are you bringing to God today?</label><textarea class="input" id="j-text" maxlength="1500"></textarea>
+        <span class="err-text" id="j-err" hidden>Write something before saving.</span></div>
+      <div><button class="btn btn-navy" type="submit">${ic("plus")}Add to journal</button></div></form>
+    <section class="card"><div class="sec-head"><h2>Entries</h2><span class="muted small tnum">${list.length} total · ${list.filter(j => j.answered).length} answered</span></div>
+      <div class="list">${list.length ? list.map(j => `<div class="item"><div class="body"><div class="meta"><span>${fmt(j.date, { day: "numeric", month: "short", year: "numeric" })}</span>${j.answered ? '<span class="pill ok">' + ic("check") + 'Answered</span>' : ""}</div>
+        <h3 style="margin-top:4px">${esc(j.title || "Untitled")}</h3><p>${esc(j.text)}</p>
+        <div class="row" style="margin-top:8px"><button class="btn btn-line btn-sm" data-action="j-answer" data-id="${j.id}">${j.answered ? "Mark as still praying" : "Mark as answered"}</button>
+        <button class="btn btn-line btn-sm" data-action="j-del" data-id="${j.id}">${ic("trash")}Delete</button></div></div></div>`).join("")
+        : empty("journal", "Your journal is empty", "Write your first prayer using the form. You can mark prayers as answered later.")}</div></section>
+  </div>`;
+}
+
+function viewMeetings() {
+  const nm = nextMeeting(); const linkSet = MEET_RE.test(state.meetLink);
+  return `<div class="view">${pageHead("Meetings & events", "Gather at the altar", "We meet online every Tuesday and Friday, 9:00 PM to 10:00 PM Ghana time (GMT).")}
+  <section class="hero" style="gap:12px"><div class="next" style="background:none;border:0;padding:0"><div><span class="label">Next meeting</span><strong>${fLong(nm.start)}</strong>
+    <span class="sub">${fTime(nm.start)} – ${fTime(nm.end)} Ghana time${viewerOutsideGhana ? " · " + fLocalTime(nm.start) + " your time" : ""}</span></div><div class="countdown" data-countdown></div></div>
+    <div class="hero-actions">${joinBtn("btn-lg")}</div></section>
+
+  <div class="grid-2" style="align-items:start">
+    <section class="card stack"><h2 style="font-size:18px">Weekly schedule</h2>
+      <div class="list">${[["Tuesday", "Midweek prayer & intercession"], ["Friday", "Friday night prayer & worship"]].map(([d, t]) => `<div class="item"><div class="date-tile gold" style="display:grid;place-items:center;height:46px">${ic("flame")}</div>
+        <div class="body"><h3>${d}</h3><p>9:00 – 10:00 PM Ghana time · ${t}</p></div></div>`).join("")}</div>
+      <div class="notice ${linkSet ? "ok" : "warn"}">${ic(linkSet ? "check" : "info")}<div><b>${linkSet ? "Same link every week" : "Meeting link not added yet"}</b>
+        ${linkSet ? `All meetings open at <code>${esc(state.meetLink)}</code>` : `The ministry's Google Meet link goes here. Until it is added, this prototype shows the placeholder <code>MEET_LINK_PLACEHOLDER</code>.`}</div></div>
+    </section>
+    <section class="card">${calendar()}</section>
+  </div>
+
+  <section class="card"><div class="sec-head"><h2>Upcoming events</h2></div><div class="list">${upcoming(8).map(meetingItem).join("")}</div></section>
+  </div>`;
+}
+
+function calendar() {
+  const { y, m } = state.cal; const first = new Date(Date.UTC(y, m, 1)); const nDays = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  const lead = (first.getUTCDay() + 6) % 7; const today = keyOf(new Date());
+  let cells = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => `<div class="dow">${d}</div>`).join("");
+  for (let i = 0; i < lead; i++) cells += "<div></div>";
+  for (let d = 1; d <= nDays; d++) {
+    const k = keyOf(new Date(Date.UTC(y, m, d))); const items = itemsOnDay(k);
+    const reg = items.some(x => x.regular), ev = items.some(x => !x.regular);
+    cells += `<button class="${k === today ? "today" : ""} ${k < today ? "past" : ""}" aria-pressed="${k === state.calSel}" data-action="cal-day" data-k="${k}" aria-label="${fLong(new Date(k + "T00:00:00Z"))}${items.length ? ", " + items.length + " event" + (items.length > 1 ? "s" : "") : ""}">
+      <span>${d}</span><span class="dots">${reg ? "<i></i>" : ""}${ev ? '<i class="ev"></i>' : ""}</span></button>`;
+  }
+  const sel = itemsOnDay(state.calSel);
+  return `<div class="cal-head"><button class="icon-btn" data-action="cal-move" data-d="-1" aria-label="Previous month">${ic("left")}</button>
+    <h3>${fmt(first, { month: "long", year: "numeric" })}</h3><button class="icon-btn" data-action="cal-move" data-d="1" aria-label="Next month">${ic("right")}</button></div>
+    <div class="cal">${cells}</div>
+    <div class="legend"><span><i></i>Weekly prayer meeting</span><span><i class="ev"></i>Special event</span></div>
+    <div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px"><h4 style="font-size:13.5px;margin-bottom:6px">${fLong(new Date(state.calSel + "T00:00:00Z"))}</h4>
+    ${sel.length ? `<div class="list">${sel.map(meetingItem).join("")}</div>` : `<p class="muted small">No meetings or events on this day.</p>`}</div>`;
+}
+
+function viewWord() {
+  const t = state.wordTab; let body = "";
+  if (t === "today") {
+    const dv = todayDevo(); const others = state.devotionals.filter(d => d.id !== dv.id).slice(0, 3);
+    body = `${verseCard(todayVerse(), true)}
+    <article class="card devo stack" style="gap:18px"><div class="stack" style="gap:6px"><span class="eyebrow">Today's devotional · ${fLong(new Date())}</span><h2>${esc(dv.title)}</h2></div>
+      <div class="part"><h4>Scripture</h4><p style="font-family:var(--f-scripture);font-style:italic">"${esc(dv.text)}"</p><p class="small" style="font-weight:700">${esc(dv.ref)} (KJV)</p></div>
+      <div class="part"><h4>Reflection</h4><p>${esc(dv.reflection)}</p></div>
+      <div class="part"><h4>Prayer</h4><p class="prayer">${esc(dv.prayer)}</p></div>
+      <div>${did(keyOf(new Date()), "devo") ? `<button class="btn btn-line btn-sm" data-action="devo-read" data-v="0">${ic("check")}Read today · undo</button>` : `<button class="btn btn-navy btn-sm" data-action="devo-read" data-v="1">${ic("check")}Mark as read</button>`}</div></article>
+    <section class="card"><div class="sec-head"><h2>More devotionals</h2></div><div class="list">${others.map(d => `<div class="item"><div class="body"><h3>${esc(d.title)}</h3><p>${esc(d.ref)}</p></div><button class="btn btn-line btn-sm" data-action="read-devo" data-id="${d.id}">Read</button></div>`).join("")}</div></section>`;
+  }
+  if (t === "topics") body = `<p class="muted" style="max-width:62ch">Use these topics in personal prayer or during our meetings. Tap a category to open it.</p>
+    <div class="stack" style="gap:10px">${TOPICS.map((tp, i) => `<details class="topic" ${i === 0 ? "open" : ""}><summary>${esc(tp.name)}<span class="row" style="gap:8px"><span class="pill">${tp.points.length} points</span>${ic("down")}</span></summary>
+      <ul>${tp.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul><div class="refs">${tp.refs.map(r => `<span class="pill gold">${esc(r)}</span>`).join("")}</div></details>`).join("")}</div>`;
+  if (t === "library") body = `<div class="card stack">
+      <div class="field"><label for="lib-q" class="sr-only">Search sermons</label>
+        <div style="position:relative">${ic("search").replace("<svg ", '<svg style="position:absolute;left:13px;top:13px;width:20px;height:20px;color:var(--muted)" ')}
+        <input class="input" id="lib-q" type="search" placeholder="Search by title, speaker, scripture or topic" value="${esc(state.sermonQuery)}" style="padding-left:42px"></div></div>
+      <div class="chips" role="group" aria-label="Filter by category">${["All", ...new Set(state.sermons.map(s => s.cat))].map(c => `<button class="chip" aria-pressed="${state.sermonCat === c}" data-action="lib-cat" data-v="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+      <div id="lib-results" aria-live="polite">${libraryResults()}</div></div>`;
+  return `<div class="view">${pageHead("The Word", "Bible & devotionals", "")}
+    ${tabs("word", [["today", "Today"], ["topics", "Prayer topics"], ["library", "Sermon library"]], t)}${body}</div>`;
+}
+
+function libraryResults() {
+  if (state.sermonError) return `<div class="notice err" role="alert">${ic("alert")}<div><b>Couldn't load the sermon library.</b>Check your internet connection and try again.
+      <div style="margin-top:10px"><button class="btn btn-line btn-sm" data-action="lib-retry">Try again</button></div></div></div>`;
+  if (!state.sermonsLoaded) return `<div class="list" aria-busy="true">${[1, 2, 3].map(() => `<div class="item"><div class="body stack" style="gap:8px"><div class="skel" style="height:14px;width:30%"></div><div class="skel" style="height:18px;width:75%"></div><div class="skel" style="height:13px;width:55%"></div></div></div>`).join("")}<span class="sr-only">Loading sermons</span></div>`;
+  const words = state.sermonQuery.toLowerCase().split(/\s+/).filter(Boolean);
+  const res = state.sermons.filter(s => (state.sermonCat === "All" || s.cat === state.sermonCat) &&
+    words.every(w => [s.title, s.speaker, s.scripture, s.cat, s.series, s.summary].join(" ").toLowerCase().includes(w))).sort((a, b) => b.date - a.date);
+  if (!res.length) return empty("search", "No sermons found", `Nothing matches${state.sermonQuery ? ` "${esc(state.sermonQuery)}"` : ""}${state.sermonCat !== "All" ? " in " + esc(state.sermonCat) : ""}. Try a different word or category.`, `<button class="btn btn-line btn-sm" data-action="lib-clear">Clear search</button>`);
+  return `<p class="muted small tnum" style="margin-bottom:4px">${res.length} sermon${res.length > 1 ? "s" : ""} · sample library</p><div class="list">${res.map(sermonItem).join("")}</div>`;
+}
+function ensureSermons() {
+  if (state.sermonsLoaded || state.sermonsLoading || state.sermonError) return;
+  state.sermonsLoading = true;
+  setTimeout(() => { state.sermonsLoading = false; state.sermonsLoaded = true; const r = $("#lib-results"); if (r) r.innerHTML = libraryResults(); }, 900);
+}
+
+/* ---------- Shared: send-on-WhatsApp step ---------- */
+function waPanel(d, o) {
+  return `<section class="card stack" style="max-width:640px" id="${o.id}">
+    <span class="eyebrow">One more step</span><h2 style="font-size:20px">${o.title}</h2>
+    <p>Tap the button below. WhatsApp opens with the message already written. Then tap <b>Send</b> in WhatsApp.</p>
+    <div><a class="btn btn-gold btn-lg" href="${esc(d.url)}" target="_blank" rel="noopener">${ic("send")}Open WhatsApp to send</a></div>
+    ${o.note ? `<div class="notice">${ic("info")}<div>${o.note}</div></div>` : ""}
+    <details><summary class="small muted" style="cursor:pointer">WhatsApp didn't open?</summary>
+      <div class="stack" style="margin-top:10px"><p class="small">Send this message on WhatsApp to <b>${PRAYER_WHATSAPP_DISPLAY}</b>:</p>
+      <pre style="white-space:pre-wrap;font-family:var(--f-ui);font-size:13px;background:var(--surface-2);padding:12px;border-radius:10px;margin:0">${esc(d.msg)}</pre>
+      <div><button class="btn btn-line btn-sm" data-action="copy-msg" data-k="${o.key}">Copy message</button></div></div></details>
+    <div><button class="btn btn-line" data-action="${o.again}">${o.againLabel}</button></div></section>`;
+}
+const waUrl = msg => "https://wa.me/" + PRAYER_WHATSAPP + "?text=" + encodeURIComponent(msg);
+
+/* ---------- Give ---------- */
+function payCard(a) {
+  return `<article class="card pay"><div class="pay-head"><span class="badge ${a.cls}" aria-hidden="true">${a.badge}</span>
+      <div><h3 style="font-size:15px">${esc(a.provider)}</h3><span class="muted small">${a.kind === "momo" ? "Mobile Money" : "Bank account number"}</span></div></div>
+    <div><div class="pay-num">${esc(a.number)}</div><div class="pay-name">${esc(a.name)}</div></div>
+    <div class="row"><button class="btn btn-line btn-sm" data-action="copy" data-v="${esc(a.number.replace(/\s/g, ""))}">${ic("copy")}Copy number</button>
+      ${a.dial ? `<a class="btn btn-line btn-sm" href="tel:${encodeURIComponent(a.dial)}">${ic("phone")}Dial ${esc(a.dial)}</a>` : ""}</div></article>`;
+}
+function viewGive() {
+  const e = state.formErrors;
+  return `<div class="view">${pageHead("Giving", "Seeds & offerings", "")}
+  <article class="scripture"><span class="eyebrow">Give cheerfully</span><blockquote>Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.</blockquote>
+    <div class="row" style="justify-content:space-between"><cite>2 Corinthians 9:7</cite><span class="version">KJV</span></div></article>
+  <section class="stack"><h2 style="font-size:18px">Mobile Money</h2><div class="pay-grid">${GIVING_ACCOUNTS.filter(a => a.kind === "momo").map(payCard).join("")}</div></section>
+  <section class="stack"><h2 style="font-size:18px">Bank transfer</h2><div class="pay-grid">${GIVING_ACCOUNTS.filter(a => a.kind === "bank").map(payCard).join("")}</div></section>
+  <div class="notice gold">${ic("shield")}<div><b>Check the name before you send.</b>Every account is in the name <strong>PETER HOSTIN DADZIE</strong>. If a different name appears when you confirm a payment, stop and contact the ministry.</div></div>
+  ${state.giveDone ? waPanel(state.giveDone, { id: "give-form", title: "Send your giving confirmation", key: "giveDone", again: "give-again", againLabel: "Confirm another gift", note: "This app does not take or process payments. It only helps you let the ministry know about the gift you sent." })
+  : `<form class="card form" id="f-give" novalidate style="max-width:640px">
+    <div class="stack" style="gap:4px"><h2 style="font-size:18px">Already sent your gift? Let us know</h2><p class="muted small">This sends a confirmation to the ministry on WhatsApp so your gift can be acknowledged. The app does not take payments.</p></div>
+    ${Object.keys(e).length ? `<div class="notice err" role="alert">${ic("alert")}<div><b>Please check the form.</b>${Object.values(e).map(esc).join(" ")}</div></div>` : ""}
+    <div class="form-grid two">
+      <div class="field"><label for="g-type">What is it for?</label><select class="input" id="g-type">${GIVING_TYPES.map(t => `<option>${t}</option>`).join("")}</select></div>
+      <div class="field"><label for="g-amount">Amount (GH₵)</label><input class="input tnum" id="g-amount" inputmode="decimal" placeholder="e.g. 100" ${e["g-amount"] ? 'aria-invalid="true"' : ""}></div>
+      <div class="field"><label for="g-via">Sent with</label><select class="input" id="g-via">${GIVING_ACCOUNTS.map(a => `<option>${a.provider}</option>`).join("")}</select></div>
+      <div class="field"><label for="g-name">Your name</label><input class="input" id="g-name" maxlength="60" placeholder="Optional"></div>
+    </div>
+    <div class="field"><label for="g-ref">Transaction ID</label><input class="input" id="g-ref" maxlength="40" placeholder="Optional. From your payment message"></div>
+    <div class="field"><label for="g-note">Note or prayer point</label><textarea class="input" id="g-note" maxlength="400" style="min-height:80px" placeholder="Optional"></textarea></div>
+    <div><button class="btn btn-gold btn-lg" type="submit">${ic("send")}Continue</button></div></form>`}
+  </div>`;
+}
+
+/* ---------- Become a member ---------- */
+function viewJoin() {
+  const e = state.formErrors;
+  return `<div class="view">${pageHead("Membership", "Become a member", "Join the Upon the Altar family. Registering helps us welcome you, pray for you and keep you informed about meetings.")}
+  ${state.memberDone && state.memberDone.sheet ? `<section class="card stack" style="max-width:640px" id="join-form">
+      <div class="notice ok">${ic("check")}<div><b>Registration received.</b>Welcome to the Upon the Altar family, ${esc(state.memberDone.first)}! A leader will be in touch.</div></div>
+      <p class="muted small">Join us online every Tuesday and Friday, 9:00 – 10:00 PM Ghana time.</p>
+      <div class="row">${joinBtn()}<button class="btn btn-line" data-action="member-again">Register someone else</button></div></section>`
+  : state.memberDone ? waPanel(state.memberDone, { id: "join-form", title: "Send your registration", key: "memberDone", again: "member-again", againLabel: "Register someone else", note: "Your registration goes from your own WhatsApp to the ministry. This app does not store it." })
+  : `<form class="card form" id="f-join" novalidate style="max-width:640px">
+    ${Object.keys(e).length ? `<div class="notice err" role="alert">${ic("alert")}<div><b>Please check the form.</b>${Object.values(e).map(esc).join(" ")}</div></div>` : ""}
+    ${state.memberError ? `<div class="notice err" role="alert">${ic("alert")}<div><b>Your registration didn't go through.</b>Check your internet connection and tap Register again, or <button class="link" type="button" data-action="member-wa">send it on WhatsApp instead</button>.</div></div>` : ""}
+    <input type="text" id="m-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <div class="field"><label for="m-name">Full name</label><input class="input" id="m-name" autocomplete="name" maxlength="80" ${e["m-name"] ? 'aria-invalid="true"' : ""}></div>
+    <div class="field"><label for="m-phone">Phone number</label><input class="input tnum" id="m-phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="e.g. 024 123 4567" ${e["m-phone"] ? 'aria-invalid="true"' : ""}>
+      <span class="hint">Preferably your WhatsApp number.</span></div>
+    <div class="form-grid two">
+      <div class="field"><label for="m-community">Community or town</label><input class="input" id="m-community" maxlength="60" placeholder="e.g. Takoradi" ${e["m-community"] ? 'aria-invalid="true"' : ""}></div>
+      <div class="field"><label for="m-region">Region</label><select class="input" id="m-region" ${e["m-region"] ? 'aria-invalid="true"' : ""}><option value="">Choose your region</option>${GH_REGIONS.map(r => `<option>${r}</option>`).join("")}</select></div>
+    </div>
+    <div class="field"><label for="m-heard">How did you hear about us?</label><select class="input" id="m-heard" ${e["m-heard"] ? 'aria-invalid="true"' : ""}><option value="">Choose one</option>${HEARD_FROM.map(r => `<option>${r}</option>`).join("")}</select></div>
+    <label class="check" style="align-items:flex-start"><input type="checkbox" id="m-consent" style="margin-top:3px"><span>I agree that Upon the Altar may keep these details and contact me about the ministry.</span></label>
+    <div><button class="btn btn-gold btn-lg" type="submit" id="m-submit">${ic("userplus")}${MEMBERS_SHEET_URL ? "Register" : "Continue"}</button></div></form>`}
+  </div>`;
+}
+
+/* ---------- Testimonies ---------- */
+function testimonyCard(t) {
+  return `<article class="testi">${t.title ? `<h3 style="font-size:15.5px">${esc(t.title)}</h3>` : ""}<p class="text">${esc(t.text)}</p>
+    <div class="meta"><b style="color:var(--fg)">${esc(t.name || "Anonymous")}</b>${t.date ? `<span>${ago(new Date(t.date + "T12:00:00Z"))}</span>` : ""}</div></article>`;
+}
+function testimonies() {
+  const list = sortedTestimonies();
+  return `<section class="card"><div class="sec-head"><h2>What God has done</h2><span class="muted small tnum">${list.length} published</span></div>
+    ${list.length ? `<div class="stack" style="gap:18px">${list.map(testimonyCard).join("")}</div>`
+      : empty("spark", "No testimonies published yet", "When members share what God has done and give permission, the leaders publish them here so we can all rejoice.")}</section>
+    ${testimonyForm()}`;
+}
+function testimonyForm() {
+  if (state.testDone) {
+    const d = state.testDone;
+    return `<section class="card stack" style="max-width:640px" id="t-form">
+      <span class="eyebrow">One more step</span><h2 style="font-size:20px">Send your testimony on WhatsApp</h2>
+      <p>Tap the button below. WhatsApp opens with your testimony already written. Then tap <b>Send</b> to deliver it to the prayer leader.</p>
+      <div><a class="btn btn-gold btn-lg" href="${esc(d.url)}" target="_blank" rel="noopener">${ic("send")}Open WhatsApp to send</a></div>
+      <div class="notice">${ic(d.vis === "public" ? "globe" : "lock")}<div><b>${d.vis === "public" ? "You gave permission to share it" : "Kept with the leaders"}</b>${d.vis === "public" ? "The leaders may publish it here and share it in meetings." : "It will not be published in the app."} This app does not store it.</div></div>
+      <details><summary class="small muted" style="cursor:pointer">WhatsApp didn't open?</summary>
+        <div class="stack" style="margin-top:10px"><p class="small">Send this message on WhatsApp to <b>${PRAYER_WHATSAPP_DISPLAY}</b>:</p>
+        <pre style="white-space:pre-wrap;font-family:var(--f-ui);font-size:13px;background:var(--surface-2);padding:12px;border-radius:10px;margin:0">${esc(d.msg)}</pre>
+        <div><button class="btn btn-line btn-sm" data-action="copy-test">Copy message</button></div></div></details>
+      <div><button class="btn btn-line" data-action="test-again">Share another testimony</button></div></section>`;
+  }
+  const e = state.formErrors.ttext;
+  return `<form class="card form" id="f-testimony" novalidate style="max-width:640px">
+    <div class="stack" style="gap:4px"><h2 style="font-size:18px">Share your testimony</h2><p class="muted small">Has God answered a prayer? Tell us. It goes to the prayer leader on WhatsApp.</p></div>
+    <div class="field"><label for="t-name">Your first name</label><input class="input" id="t-name" maxlength="40" placeholder="Optional"></div>
+    <div class="field"><label for="t-text">Your testimony</label>
+      <textarea class="input" id="t-text" maxlength="1200" placeholder="What did you pray for, and what did God do?" ${e ? 'aria-invalid="true" aria-describedby="t-text-err"' : ""}>${esc(state.testPrefill || "")}</textarea>
+      ${e ? `<span class="err-text" id="t-text-err">${esc(e)}</span>` : ""}</div>
+    <fieldset class="field"><legend>May we share it?</legend>
+      <div class="stack" style="gap:8px;margin-top:6px">
+        <label class="choice"><input type="radio" name="tvis" value="public" checked><div><b>Yes, share it in the app and in meetings</b><span>Only your first name (or "Anonymous") is shown.</span></div></label>
+        <label class="choice"><input type="radio" name="tvis" value="private"><div><b>No, keep it with the leaders</b><span>It will not be published.</span></div></label>
+      </div></fieldset>
+    <div><button class="btn btn-gold btn-lg" type="submit">${ic("send")}Continue</button></div></form>`;
+}
+
+/* ---------- My prayer life ---------- */
+function heatmap() {
+  const today = startOfDay(new Date()), start = new Date(today - (((today.getUTCDay() + 6) % 7) + 21) * DAY);
+  const names = { prayed: "prayed", devo: "read the devotional", meeting: "joined the meeting" };
+  let cells = ["M", "T", "W", "T", "F", "S", "S"].map(d => `<div class="dow">${d}</div>`).join(""), active = 0;
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(start.getTime() + i * DAY), k = keyOf(d), fut = d > today, a = activity[k] ? Object.keys(activity[k]) : [];
+    if (a.length && !fut) active++;
+    cells += `<div class="hm l${fut ? "x" : Math.min(a.length, 3)} ${k === keyOf(today) ? "now" : ""}" title="${fDay(d)}${a.length ? ": " + a.map(x => names[x] || x).join(", ") : ""}"></div>`;
+  }
+  return `<div class="sec-head"><h2>Last 4 weeks</h2><span class="muted small tnum">${active} active day${active === 1 ? "" : "s"}</span></div>
+    <div class="heat" role="img" aria-label="${active} active days in the last four weeks">${cells}</div>
+    <div class="legend"><span>Less</span><i class="hm l0"></i><i class="hm l1"></i><i class="hm l2"></i><i class="hm l3"></i><span>More</span></div>`;
+}
+function viewMe() {
+  const now = new Date(), today = keyOf(now), nm = nextMeeting(), j = state.journal, s = streak();
+  const answered = j.filter(x => x.answered).sort((a, b) => b.date - a.date);
+  const meetingsMonth = Object.keys(activity).filter(k => k.startsWith(today.slice(0, 7)) && activity[k].meeting).length;
+  const meetingToday = MEETING_DAYS.includes(now.getUTCDay()) && nm.start.getUTCDate() === now.getUTCDate();
+  const step = (done, label, action) => `<div class="item" style="align-items:center"><span class="tick ${done ? "on" : ""}">${done ? ic("check") : ""}</span><div class="body"><h3>${label}</h3></div>${action}</div>`;
+  return `<div class="view">${pageHead("My prayer life", "Your walk at the altar", "Your progress is saved only on this phone. Nobody else can see it, and it is not backed up.")}
+  <div class="stats">
+    <div class="stat"><b>${s}</b><span>Day${s === 1 ? "" : "s"} in a row</span></div>
+    <div class="stat"><b>${j.length}</b><span>Prayers in your journal</span></div>
+    <div class="stat"><b>${answered.length}</b><span>Answered prayers</span></div>
+    <div class="stat"><b>${meetingsMonth}</b><span>Meetings joined in ${fmt(now, { month: "long" })}</span></div></div>
+  <div class="grid-2" style="align-items:start">
+    <section class="card"><div class="sec-head"><h2>Today</h2><span class="muted small">${fLong(now)}</span></div><div class="list">
+      ${step(did(today, "prayed"), "Spend time in prayer", did(today, "prayed") ? `<button class="btn btn-line btn-sm" data-action="checkin" data-v="0">Undo</button>` : `<button class="btn btn-navy btn-sm" data-action="checkin" data-v="1">I prayed</button>`)}
+      ${step(did(today, "devo"), "Read today's devotional", did(today, "devo") ? "" : `<button class="btn btn-line btn-sm" data-go="word" data-tab="today">Read</button>`)}
+      ${meetingToday ? step(did(today, "meeting"), "Join tonight's prayer meeting", did(today, "meeting") ? "" : joinBtn("btn-sm"))
+        : step(false, `Next meeting: ${fDay(nm.start)}, ${fTime(nm.start)}`, `<button class="btn btn-line btn-sm" data-go="meetings">Details</button>`)}
+    </div><p class="hint small muted" style="margin-top:10px">A meeting counts when you tap Join Live Prayer from 30 minutes before it starts.</p></section>
+    <section class="card">${heatmap()}</section>
+  </div>
+  <section class="card"><div class="sec-head"><h2>Answered prayers</h2><button class="link" data-go="prayer" data-tab="journal">Open journal</button></div>
+    <div class="list">${answered.length ? answered.slice(0, 5).map(x => `<div class="item"><span class="tick on">${ic("check")}</span><div class="body"><h3>${esc(x.title || "Untitled")}</h3><p>${esc(x.text)}</p>
+      <div style="margin-top:8px"><button class="btn btn-line btn-sm" data-action="share-testimony" data-id="${x.id}">${ic("spark")}Share as a testimony</button></div></div></div>`).join("")
+      : empty("journal", "No answered prayers yet", "Write prayers in your journal and mark them as answered when God comes through. They will show up here.", `<button class="btn btn-line btn-sm" data-go="prayer" data-tab="journal">Write a prayer</button>`)}</div></section>
+  </div>`;
+}
+
+/* ---------- Admin ---------- */
+function viewAdmin() {
+  if (!state.admin) return `<div class="view">${pageHead("Leaders", "Ministry admin", "")}
+    <section class="card stack" style="max-width:620px">
+      <div class="notice warn">${ic("alert")}<div><b>This is a demonstration, not real security.</b>There is no password here and anyone with this prototype can open it. In the real app, leaders sign in with their own account and the database only releases private prayer requests to approved leader accounts.</div></div>
+      <p>Use the demo to see how leaders would manage devotionals, sermons, meetings, announcements and prayer requests.</p>
+      <div><button class="btn btn-navy btn-lg" data-action="admin-enter">${ic("shield")}Open demo admin</button></div></section></div>`;
+  const t = state.adminTab; let body = "";
+  const priv = state.requests.filter(r => r.vis === "private");
+  if (t === "overview") body = `<div class="stats">
+      <div class="stat"><b>${priv.filter(r => r.status !== "prayed").length}</b><span>Private requests awaiting prayer</span></div>
+      <div class="stat"><b>${state.requests.filter(r => r.vis === "public" && !r.hidden).length}</b><span>Requests on the Prayer Wall</span></div>
+      <div class="stat"><b>${state.sermons.length}</b><span>Sermons in library</span></div>
+      <div class="stat"><b>${state.events.filter(e => e.end > new Date()).length}</b><span>Upcoming special events</span></div></div>
+    <section class="card stack"><h2 style="font-size:17px">Meeting link</h2>${linkForm()}</section>`;
+  if (t === "requests") body = `<div class="notice">${ic("lock")}<div><b>Leaders only.</b>In the real app this list is protected by sign-in and database rules, so private requests never reach members' phones.</div></div>
+    <section class="card"><div class="list">${state.requests.slice().sort((a, b) => b.date - a.date).map(r => `<div class="item"><div class="body">
+      <div class="meta"><b style="color:var(--fg)">${esc(r.name)}</b>${r.vis === "private" ? '<span class="pill warn">' + ic("lock") + "Leaders only</span>" : r.hidden ? '<span class="pill err">' + ic("eyeoff") + "Hidden from wall</span>" : '<span class="pill ok">' + ic("globe") + "On Prayer Wall</span>"}
+      <span class="pill">${esc(r.category)}</span>${r.status === "prayed" ? '<span class="pill gold">' + ic("check") + "Prayed for</span>" : ""}<span>${ago(r.date)}</span></div>
+      <p style="margin-top:6px;color:var(--fg)">${esc(r.text)}</p>
+      <div class="row" style="margin-top:8px"><button class="btn btn-line btn-sm" data-action="req-prayed" data-id="${r.id}">${r.status === "prayed" ? "Mark as not yet prayed" : "Mark as prayed for"}</button>
+      ${r.vis === "public" ? `<button class="btn btn-line btn-sm" data-action="req-hide" data-id="${r.id}">${r.hidden ? ic("eye") + "Show on wall" : ic("eyeoff") + "Hide from wall"}</button>` : ""}</div></div></div>`).join("")}</div></section>`;
+  if (t === "devotionals") body = `<div class="grid-2" style="align-items:start">
+    <form class="card form" id="f-devo" novalidate><h2 style="font-size:17px">Add a devotional</h2>
+      ${field("dv-title", "Title")}${field("dv-ref", "Scripture reference", "e.g. Psalm 23:1")}${field("dv-text", "Scripture text", "", true)}${field("dv-refl", "Reflection", "", true)}${field("dv-prayer", "Prayer", "", true)}
+      <label class="check"><input type="checkbox" id="dv-feature" checked>Show as today's devotional</label>
+      <div><button class="btn btn-navy" type="submit">${ic("plus")}Add devotional</button></div></form>
+    <section class="card"><div class="sec-head"><h2>Devotionals</h2><span class="muted small">${state.devotionals.length}</span></div><div class="list">
+      ${state.devotionals.map(d => `<div class="item"><div class="body"><h3>${esc(d.title)}</h3><p>${esc(d.ref)}</p></div>${todayDevo().id === d.id ? '<span class="pill gold">Today</span>' : `<button class="btn btn-line btn-sm" data-action="feature-devo" data-id="${d.id}">Show today</button>`}</div>`).join("")}</div></section></div>`;
+  if (t === "sermons") body = `<div class="grid-2" style="align-items:start">
+    <form class="card form" id="f-sermon" novalidate><h2 style="font-size:17px">Add a sermon</h2>
+      ${field("sm-title", "Title")}${field("sm-speaker", "Speaker")}
+      <div class="field"><label for="sm-cat">Category</label><select class="input" id="sm-cat">${["Prayer", "Faith", "Holy Spirit", "Intercession", "Family", "Discipleship", "Worship"].map(c => `<option>${c}</option>`).join("")}</select></div>
+      ${field("sm-scripture", "Main scripture", "e.g. John 15:1-8")}${field("sm-summary", "Short summary", "", true)}
+      <p class="hint small muted">In the real app you would also attach an audio file or a YouTube link here.</p>
+      <div><button class="btn btn-navy" type="submit">${ic("plus")}Add sermon</button></div></form>
+    <section class="card"><div class="sec-head"><h2>Library</h2><span class="muted small">${state.sermons.length}</span></div><div class="list">
+      ${state.sermons.slice().sort((a, b) => b.date - a.date).map(s => `<div class="item"><div class="body"><h3>${esc(s.title)}</h3><p>${esc(s.speaker)} · ${ago(s.date)}</p></div><button class="icon-btn" data-action="del-sermon" data-id="${s.id}" aria-label="Delete sermon">${ic("trash")}</button></div>`).join("")}</div></section></div>`;
+  if (t === "meetings") body = `<div class="grid-2" style="align-items:start">
+    <div class="stack" style="gap:22px">
+      <section class="card stack"><h2 style="font-size:17px">Weekly meetings</h2><p class="muted small">Every Tuesday and Friday, 9:00 – 10:00 PM Ghana time. In the real app leaders could change these days and times here.</p></section>
+      <section class="card stack"><h2 style="font-size:17px">Google Meet link</h2>${linkForm()}</section>
+    </div>
+    <form class="card form" id="f-event" novalidate><h2 style="font-size:17px">Add a special event</h2>
+      ${field("ev-title", "Event name")}
+      <div class="form-grid two"><div class="field"><label for="ev-date">Date</label><input class="input" type="date" id="ev-date" value="${keyOf(new Date(Date.now() + 7 * DAY))}"></div>
+        <div class="field"><label for="ev-place">Where</label><select class="input" id="ev-place"><option>Online · Google Meet</option><option>In person · venue to be announced</option></select></div>
+        <div class="field"><label for="ev-start">Starts (Ghana time)</label><input class="input" type="time" id="ev-start" value="21:00"></div>
+        <div class="field"><label for="ev-end">Ends (Ghana time)</label><input class="input" type="time" id="ev-end" value="22:00"></div></div>
+      ${field("ev-desc", "Details", "", true)}
+      <div><button class="btn btn-navy" type="submit">${ic("plus")}Add to calendar</button></div></form></div>`;
+  if (t === "announcements") body = `<div class="grid-2" style="align-items:start">
+    <form class="card form" id="f-ann" novalidate><h2 style="font-size:17px">New announcement</h2>
+      ${field("an-title", "Headline")}${field("an-body", "Message", "", true)}
+      <label class="check"><input type="checkbox" id="an-pin">Pin to the top</label>
+      <div><button class="btn btn-navy" type="submit">${ic("mega")}Publish announcement</button></div></form>
+    <section class="card"><div class="sec-head"><h2>Published</h2></div><div class="list">${state.announcements.length ? sortedAnns().map(a => annItem(a, true)).join("") : empty("mega", "No announcements", "Publish one using the form.")}</div></section></div>`;
+  return `<div class="view">
+    <div class="admin-banner"><p><b>Demo admin, not secure.</b> Changes show across the prototype until you reload, then reset. No real sign-in protects this screen.</p>
+      <button class="btn btn-line btn-sm" data-action="admin-exit">Exit admin</button></div>
+    ${pageHead("Leaders", "Ministry admin", "")}
+    ${tabs("admin", [["overview", "Overview"], ["requests", "Prayer requests"], ["devotionals", "Devotionals"], ["sermons", "Sermons"], ["meetings", "Meetings"], ["announcements", "Announcements"]], t)}
+    ${body}</div>`;
+}
+function field(id, label, ph = "", area = false) {
+  const e = state.formErrors[id];
+  const attrs = `class="input" id="${id}" placeholder="${esc(ph)}" ${e ? `aria-invalid="true" aria-describedby="${id}-err"` : ""}`;
+  return `<div class="field"><label for="${id}">${label}</label>${area ? `<textarea ${attrs} style="min-height:90px"></textarea>` : `<input ${attrs}>`}${e ? `<span class="err-text" id="${id}-err">${esc(e)}</span>` : ""}</div>`;
+}
+function linkForm() {
+  const e = state.formErrors["mt-link"]; const ok = MEET_RE.test(state.meetLink);
+  return `<form class="form" id="f-link" novalidate>
+    <div class="notice ${ok ? "ok" : "warn"}">${ic(ok ? "check" : "info")}<div>${ok ? `<b>Link added for this session.</b>The Join Live Prayer buttons now open it. To keep it permanently, paste it into the MEET_LINK setting at the top of the app file.` : `<b>No link yet.</b>The app is using the placeholder <code>MEET_LINK_PLACEHOLDER</code>. Paste the real link from Google Meet below to test it.`}</div></div>
+    <div class="field"><label for="mt-link">Google Meet link</label><input class="input" id="mt-link" inputmode="url" placeholder="https://meet.google.com/xxx-xxxx-xxx" value="${esc(state.meetLink)}" ${e ? 'aria-invalid="true" aria-describedby="mt-link-err"' : ""}>
+      ${e ? `<span class="err-text" id="mt-link-err">${esc(e)}</span>` : `<span class="hint">Copy it from Google Meet: start a meeting, then choose "Meeting details" and copy the joining link.</span>`}</div>
+    <div class="row"><button class="btn btn-navy" type="submit">Save link</button>${ok ? `<button class="btn btn-line" type="button" data-action="link-clear">Remove link</button>` : ""}</div></form>`;
+}
+
+/* ---------- Navigation & rendering ---------- */
+const NAV = [["home", "Home", "home"], ["prayer", "Pray", "flame"], ["meetings", "Meetings", "cal"], ["word", "Word", "book"], ["give", "Give", "gift"], ["me", "Me", "user"], ["join", "Become a member", "userplus", true]];
+function renderNav() {
+  $("#side-nav").innerHTML = NAV.map(([k, l, i]) => `<button data-go="${k}" aria-current="${state.view === k ? "page" : "false"}">${ic(i)}${({ Pray: "Prayer", Me: "My prayer life" })[l] || l}</button>`).join("");
+  $("#bottom-nav").innerHTML = NAV.filter(n => !n[3]).map(([k, l, i]) => `<button data-go="${k}" aria-current="${state.view === k ? "page" : "false"}"><span class="nav-ic">${ic(i)}</span>${l}</button>`).join("");
+}
+function render() {
+  const views = { home: viewHome, prayer: viewPrayer, meetings: viewMeetings, word: viewWord, admin: viewAdmin, me: viewMe, give: viewGive, join: viewJoin };
+  $("#view").innerHTML = views[state.view]();
+  renderNav(); updateCountdowns();
+  if (state.view === "word" && state.wordTab === "library") ensureSermons();
+}
+function go(view, tab) {
+  state.view = view; state.formErrors = {};
+  if (tab) { if (view === "prayer") state.prayerTab = tab; if (view === "word") state.wordTab = tab; }
+  render(); window.scrollTo({ top: 0 }); $("#view").focus({ preventScroll: true });
+}
+
+/* ---------- Countdown ---------- */
+function updateCountdowns() {
+  const els = document.querySelectorAll("[data-countdown]"); if (!els.length) return;
+  const now = new Date(), m = nextMeeting(); let html;
+  if (now >= m.start) html = `<span class="live"><span class="dot"></span>Live now · until ${fTime(m.end)}</span>`;
+  else {
+    let s = Math.floor((m.start - now) / 1000); const d = Math.floor(s / 86400); s -= d * 86400; const h = Math.floor(s / 3600); s -= h * 3600; const mi = Math.floor(s / 60); s -= mi * 60;
+    const u = (v, l) => `<div class="u"><b>${String(v).padStart(2, "0")}</b><span>${l}</span></div>`;
+    html = u(d, "days") + u(h, "hrs") + u(mi, "min") + u(s, "sec");
+  }
+  els.forEach(el => { el.innerHTML = html; el.setAttribute("aria-label", now >= m.start ? "Meeting is live now" : "Time until the next meeting"); });
+  const tj = $("#top-join"); if (tj) tj.textContent = now >= m.start ? "Join · Live" : "Join Live";
+}
+setInterval(updateCountdowns, 1000);
+
+/* ---------- Modal & toast ---------- */
+function modal(html) {
+  $("#modal-root").innerHTML = `<div class="overlay" data-overlay><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="m-title" tabindex="-1">${html}</div></div>`;
+  $(".sheet").focus();
+}
+const closeModal = () => { $("#modal-root").innerHTML = ""; };
+let toastTimer;
+function toast(msg, undo) {
+  clearTimeout(toastTimer);
+  $("#toast-root").innerHTML = `<div class="toast">${esc(msg)}${undo ? '<button data-action="undo">Undo</button>' : ""}</div>`;
+  window.__undo = undo;
+  toastTimer = setTimeout(() => { $("#toast-root").innerHTML = ""; window.__undo = null; }, undo ? 6000 : 3500);
+}
+
+/* ---------- Actions ---------- */
+const find = (arr, id) => arr.find(x => x.id === id);
+const actions = {
+  "join-top": () => { if (MEET_RE.test(state.meetLink)) { recordJoin(); const a = document.createElement("a"); a.href = state.meetLink; a.target = "_blank"; a.rel = "noopener"; a.click(); } else actions["meet-missing"](); },
+  "meet-missing": () => modal(`<span class="eyebrow">Join Live Prayer</span><h2 id="m-title">The meeting link hasn't been added yet</h2>
+    <p>This prototype uses a clearly labelled placeholder instead of a real link: <code>MEET_LINK_PLACEHOLDER</code></p>
+    <p class="muted">Once the ministry adds its Google Meet link, this button opens the meeting directly. Leaders can test a link now under Leaders → Meetings.</p>
+    <div class="row"><button class="btn btn-navy" data-action="to-link">Add a link (demo admin)</button><button class="btn btn-line" data-action="close">Close</button></div>`),
+  "to-link": () => { closeModal(); state.admin = true; state.adminTab = "meetings"; go("admin"); },
+  close: closeModal,
+  about: () => modal(`<span class="eyebrow">About this prototype</span><h2 id="m-title">What works here</h2>
+    <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+      <li>All screens, buttons, tabs, search and the calendar work.</li>
+      <li>Forms work, but <b>nothing is sent or saved</b>. Everything resets when you reload.</li>
+      <li>Names, requests, sermons and events are <b>sample content</b>. Bible verses are from the King James Version.</li>
+      <li>The Leaders area is a <b>demo with no real security</b>.</li>
+      <li>The Google Meet link is a placeholder until you add the real one.</li></ul>
+    <p class="muted small">Preview other states:</p>
+    <div class="row"><button class="btn btn-line btn-sm" data-action="preview-error">Sermon library error</button><button class="btn btn-line btn-sm" data-action="preview-empty">Empty Prayer Wall filter</button></div>
+    <div><button class="btn btn-navy" data-action="close">Got it</button></div>`),
+  "preview-error": () => { closeModal(); state.sermonError = true; go("word", "library"); },
+  "preview-empty": () => { closeModal(); state.wallFilter = "Other"; go("prayer", "wall"); },
+  "lib-retry": () => { state.sermonError = false; state.sermonsLoaded = false; $("#lib-results").innerHTML = libraryResults(); ensureSermons(); },
+  "lib-cat": el => { state.sermonCat = el.dataset.v; document.querySelectorAll('[data-action="lib-cat"]').forEach(b => b.setAttribute("aria-pressed", b.dataset.v === state.sermonCat)); $("#lib-results").innerHTML = libraryResults(); },
+  "lib-clear": () => { state.sermonQuery = ""; state.sermonCat = "All"; render(); },
+  listen: () => {},
+  notes: () => modal(`<span class="eyebrow">Sermon notes · 1 Samuel 30:1-19</span><h2 id="m-title">Recover All</h2>
+    ${SERMON_NOTES.map(n => `<h3 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-text);margin-top:6px">${esc(n.h)}</h3>${n.p.map(x => `<p>${esc(x)}</p>`).join("")}`).join("")}
+    <div><button class="btn btn-navy" data-action="close">Close</button></div>`),
+  copy: el => { const v = el.dataset.v; try { navigator.clipboard.writeText(v).then(() => toast("Copied " + v), () => toast("Couldn't copy. Press and hold the number to copy it.")); } catch (e) { toast("Couldn't copy. Press and hold the number to copy it."); } },
+  "copy-msg": el => { const d = state[el.dataset.k]; try { navigator.clipboard.writeText(d.msg).then(() => toast("Message copied."), () => toast("Couldn't copy. Press and hold the message to copy it.")); } catch (e) { toast("Couldn't copy. Press and hold the message to copy it."); } },
+  "give-again": () => { state.giveDone = null; render(); },
+  "member-again": () => { state.memberDone = null; state.memberError = false; render(); },
+  "member-wa": () => { const p = state.memberPending; if (!p) return; state.memberDone = { url: p.url, msg: p.msg }; state.memberError = false; render(); window.scrollTo({ top: 0 }); },
+  checkin: el => { const on = el.dataset.v === "1"; logActivity("prayed", on); render(); if (on) toast("Checked in. Keep the fire burning!"); },
+  "devo-read": el => { const on = el.dataset.v === "1"; logActivity("devo", on); render(); if (on) toast("Marked as read today."); },
+  "share-testimony": el => { const x = find(state.journal, el.dataset.id); state.testPrefill = (x.title ? x.title + ": " : "") + x.text; state.testDone = null; go("prayer", "testimonies"); const f = $("#f-testimony"); f && f.scrollIntoView({ block: "start" }); },
+  "test-again": () => { state.testDone = null; render(); },
+  "copy-test": () => { try { navigator.clipboard.writeText(state.testDone.msg).then(() => toast("Message copied."), () => toast("Couldn't copy. Press and hold the message to copy it.")); } catch (e) { toast("Couldn't copy. Press and hold the message to copy it."); } },
+  "copy-req": () => { try { navigator.clipboard.writeText(state.reqDone.msg).then(() => toast("Message copied."), () => toast("Couldn't copy. Press and hold the message to copy it.")); } catch (e) { toast("Couldn't copy. Press and hold the message to copy it."); } },
+  "wall-filter": el => { state.wallFilter = el.dataset.v; render(); },
+  pray: el => { const id = el.dataset.id; state.prayed.has(id) ? state.prayed.delete(id) : state.prayed.add(id); render(); if (state.prayed.has(id)) toast("Thank you for praying."); },
+  "req-again": () => { state.reqDone = null; render(); },
+  "j-answer": el => { const j = find(state.journal, el.dataset.id); j.answered = !j.answered; saveJournal(); render(); toast(j.answered ? "Marked as answered. Praise God!" : "Marked as still praying."); },
+  "j-del": el => { const i = state.journal.findIndex(j => j.id === el.dataset.id); const [j] = state.journal.splice(i, 1); saveJournal(); render(); toast("Entry deleted.", () => { state.journal.splice(i, 0, j); saveJournal(); render(); }); },
+  undo: () => { window.__undo && window.__undo(); $("#toast-root").innerHTML = ""; },
+  event: el => {
+    const e = el.dataset.id && !el.dataset.id.startsWith("reg-") ? find(state.events, el.dataset.id) : itemsOnDay(el.dataset.start.slice(0, 10)).find(x => x.regular);
+    if (!e) return;
+    modal(`<span class="eyebrow">${e.regular ? "Weekly prayer meeting" : "Special event"}</span><h2 id="m-title">${esc(e.title)}</h2>
+      <div class="stack" style="gap:8px"><div class="row">${ic("cal", "").replace("<svg ", '<svg style="width:18px;height:18px;color:var(--gold-text)" ')}${fLong(e.start)}${keyOf(e.start) !== keyOf(new Date(e.end - 1)) ? " – " + fLong(e.end) : ""}</div>
+      <div class="row">${ic("clock").replace("<svg ", '<svg style="width:18px;height:18px;color:var(--gold-text)" ')}<span>${timeRange(e)}</span></div>
+      <div class="row">${ic("pin").replace("<svg ", '<svg style="width:18px;height:18px;color:var(--gold-text)" ')}${esc(e.place)}</div></div>
+      <p>${esc(e.desc)}</p>
+      <div class="row">${e.place.startsWith("Online") ? joinBtn() : ""}<button class="btn btn-line" data-action="close">Close</button></div>`);
+  },
+  "cal-move": el => { let { y, m } = state.cal; m += +el.dataset.d; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } state.cal = { y, m }; render(); },
+  "cal-day": el => { state.calSel = el.dataset.k; render(); },
+  "read-devo": el => { state.featuredDev = el.dataset.id; render(); window.scrollTo({ top: 0, behavior: "smooth" }); },
+  "admin-enter": () => { state.admin = true; state.adminTab = "overview"; render(); },
+  "admin-exit": () => { state.admin = false; go("home"); toast("Left demo admin."); },
+  "req-prayed": el => { const r = find(state.requests, el.dataset.id); r.status = r.status === "prayed" ? "" : "prayed"; render(); },
+  "req-hide": el => { const r = find(state.requests, el.dataset.id); r.hidden = !r.hidden; render(); toast(r.hidden ? "Hidden from the Prayer Wall." : "Shown on the Prayer Wall."); },
+  "feature-devo": el => { state.featuredDev = el.dataset.id; render(); toast("Set as today's devotional for this session."); },
+  "del-sermon": el => { const i = state.sermons.findIndex(s => s.id === el.dataset.id); const [s] = state.sermons.splice(i, 1); render(); toast("Sermon removed.", () => { state.sermons.splice(i, 0, s); render(); }); },
+  "del-ann": el => { const i = state.announcements.findIndex(a => a.id === el.dataset.id); const [a] = state.announcements.splice(i, 1); render(); toast("Announcement deleted.", () => { state.announcements.splice(i, 0, a); render(); }); },
+  "link-clear": () => { state.meetLink = ""; render(); toast("Meeting link removed. Using the placeholder again."); }
+};
+
+/* ---------- Forms ---------- */
+const val = id => ($("#" + id)?.value || "").trim();
+function need(ids) { const e = {}; ids.forEach(([id, msg]) => { if (!val(id)) e[id] = msg; }); return e; }
+function fail(errs) { state.formErrors = errs; render(); const first = document.querySelector('[aria-invalid="true"]'); first && first.focus(); }
+const forms = {
+  "f-request": f => {
+    const text = val("req-text"), name = val("req-name"), cat = val("req-cat"), vis = f.querySelector('input[name="vis"]:checked').value;
+    if (text.length < 10) {
+      state.formErrors = { text: text ? "Please write a little more (at least 10 characters)." : "Please write your prayer request." }; render();
+      $("#req-name").value = name; $("#req-cat").value = cat; $("#req-text").value = text; document.querySelector(`input[name="vis"][value="${vis}"]`).checked = true; $("#req-text").focus(); return;
+    }
+    const msg = "PRAYER REQUEST (Upon the Altar app)\nName: " + (name || "Anonymous") + "\nCategory: " + cat + "\nPrivacy: " + (vis === "private" ? "PRIVATE - prayer leader only" : "Okay to share with the prayer group") + "\n\n" + text;
+    state.reqDone = { url: "https://wa.me/" + PRAYER_WHATSAPP + "?text=" + encodeURIComponent(msg), msg, vis };
+    state.formErrors = {}; render(); window.scrollTo({ top: 0 });
+  },
+  "f-give": () => {
+    const ids = ["g-type", "g-amount", "g-via", "g-name", "g-ref", "g-note"], amt = val("g-amount").replace(/[, ]/g, ""), n = Number(amt);
+    if (!amt || !isFinite(n) || n <= 0) return keepAndFail({ "g-amount": "Enter the amount you sent, for example 100." }, ids);
+    const msg = "GIVING CONFIRMATION (Upon the Altar app)\nName: " + (val("g-name") || "Not given") + "\nFor: " + val("g-type") + "\nAmount: GH₵ " + n.toLocaleString("en-GH", { maximumFractionDigits: 2 }) +
+      "\nSent with: " + val("g-via") + (val("g-ref") ? "\nTransaction ID: " + val("g-ref") : "") + (val("g-note") ? "\n\nNote: " + val("g-note") : "");
+    state.giveDone = { url: waUrl(msg), msg }; state.formErrors = {}; render(); const t = $("#give-form"); t && t.scrollIntoView({ block: "start" });
+  },
+  "f-join": () => {
+    const ids = ["m-name", "m-phone", "m-community", "m-region", "m-heard"];
+    const e = need([["m-name", "Enter your full name."], ["m-community", "Enter your community or town."], ["m-region", "Choose your region."], ["m-heard", "Tell us how you heard about us."]]);
+    const digits = val("m-phone").replace(/\D/g, "");
+    if (digits.length < 9 || digits.length > 15) e["m-phone"] = "Enter a valid phone number.";
+    if (!$("#m-consent").checked) e["m-consent"] = "Tick the box to agree that we may keep your details.";
+    if (Object.keys(e).length) { const c = $("#m-consent").checked; keepAndFail(e, ids); $("#m-consent").checked = c; return; }
+    const msg = "NEW MEMBER REGISTRATION (Upon the Altar app)\nName: " + val("m-name") + "\nPhone: " + val("m-phone") + "\nCommunity: " + val("m-community") + "\nRegion: " + val("m-region") + "\nHeard about us through: " + val("m-heard") + "\nAgreed that the ministry may keep these details: Yes";
+    const wa = () => { state.memberDone = { url: waUrl(msg), msg }; state.memberError = false; state.formErrors = {}; render(); window.scrollTo({ top: 0 }); };
+    if (!MEMBERS_SHEET_URL) return wa();
+    if (val("m-website")) return;
+    const fields = { name: val("m-name"), phone: val("m-phone"), community: val("m-community"), region: val("m-region"), heard: val("m-heard"), consent: "yes", website: "" };
+    const btn = $("#m-submit"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Registering…';
+    state.memberPending = { url: waUrl(msg), msg, fields };
+    fetch(MEMBERS_SHEET_URL, { method: "POST", mode: "no-cors", body: new URLSearchParams(fields) })
+      .then(() => { state.memberDone = { sheet: true, first: fields.name.split(" ")[0] }; state.memberError = false; state.formErrors = {}; render(); window.scrollTo({ top: 0 }); })
+      .catch(() => { state.memberError = true; render(); Object.entries({ "m-name": fields.name, "m-phone": fields.phone, "m-community": fields.community, "m-region": fields.region, "m-heard": fields.heard }).forEach(([id, v]) => { $("#" + id).value = v; }); $("#m-consent").checked = true; });
+  },
+  "f-testimony": f => {
+    const text = val("t-text"), name = val("t-name"), vis = f.querySelector('input[name="tvis"]:checked').value;
+    if (text.length < 10) {
+      state.formErrors = { ttext: text ? "Please write a little more (at least 10 characters)." : "Please write your testimony." }; state.testPrefill = text; render();
+      $("#t-name").value = name; document.querySelector(`input[name="tvis"][value="${vis}"]`).checked = true; $("#t-text").focus(); return;
+    }
+    const msg = "TESTIMONY (Upon the Altar app)\nName: " + (name || "Anonymous") + "\nPermission to share: " + (vis === "public" ? "YES - may be shared in the app and in meetings" : "NO - for the leaders only") + "\n\n" + text;
+    state.testDone = { url: "https://wa.me/" + PRAYER_WHATSAPP + "?text=" + encodeURIComponent(msg), msg, vis };
+    state.testPrefill = ""; state.formErrors = {}; render(); const t = $("#t-form"); t && t.scrollIntoView({ block: "start" });
+  },
+  "f-journal": () => {
+    if (!val("j-text")) { $("#j-err").hidden = false; $("#j-text").setAttribute("aria-invalid", "true"); $("#j-text").focus(); return; }
+    state.journal.push({ id: uid(), date: new Date(), title: val("j-title"), text: val("j-text"), answered: false }); logActivity("prayed"); const ok = saveJournal(); render(); toast(ok ? "Saved on this phone." : "Added, but this browser can't save it. It will clear when you close the app.");
+  },
+  "f-link": () => {
+    const v = val("mt-link");
+    if (!MEET_RE.test(v)) { fail({ "mt-link": v ? "That doesn't look like a Google Meet link. It should start with https://meet.google.com/ followed by a code like abc-defg-hij." : "Paste the Google Meet link first." }); $("#mt-link").value = v; return; }
+    state.meetLink = v; state.formErrors = {}; render(); toast("Meeting link saved for this session.");
+  },
+  "f-devo": () => {
+    const e = need([["dv-title", "Add a title."], ["dv-ref", "Add the scripture reference."], ["dv-text", "Add the scripture text."], ["dv-refl", "Add a reflection."], ["dv-prayer", "Add a closing prayer."]]);
+    if (Object.keys(e).length) return keepAndFail(e, ["dv-title", "dv-ref", "dv-text", "dv-refl", "dv-prayer"]);
+    const d = { id: uid(), title: val("dv-title"), ref: val("dv-ref"), text: val("dv-text"), reflection: val("dv-refl"), prayer: val("dv-prayer") };
+    state.devotionals.unshift(d); if ($("#dv-feature").checked) state.featuredDev = d.id; state.formErrors = {}; render(); toast("Devotional added for this session.");
+  },
+  "f-sermon": () => {
+    const e = need([["sm-title", "Add a title."], ["sm-speaker", "Add the speaker's name."], ["sm-scripture", "Add the main scripture."]]);
+    if (Object.keys(e).length) return keepAndFail(e, ["sm-title", "sm-speaker", "sm-scripture", "sm-summary"]);
+    state.sermons.push({ id: uid(), title: val("sm-title"), speaker: val("sm-speaker"), cat: val("sm-cat"), series: "New", scripture: val("sm-scripture"), date: new Date(), mins: 0, summary: val("sm-summary") || "No summary yet." });
+    state.sermonsLoaded = true; state.formErrors = {}; render(); toast("Sermon added to the library for this session.");
+  },
+  "f-event": () => {
+    const e = need([["ev-title", "Give the event a name."]]); const date = val("ev-date"), s = val("ev-start"), en = val("ev-end");
+    if (!date) e["ev-date"] = "Pick a date.";
+    if (Object.keys(e).length) return keepAndFail(e, ["ev-title", "ev-date", "ev-start", "ev-end", "ev-desc"]);
+    const start = new Date(`${date}T${s || "21:00"}:00Z`); let end = new Date(`${date}T${en || "22:00"}:00Z`); if (end <= start) end = new Date(end.getTime() + DAY);
+    state.events.push({ id: uid(), title: val("ev-title"), start, end, place: val("ev-place"), desc: val("ev-desc") || "More details to follow." });
+    state.formErrors = {}; render(); toast("Event added to the calendar for this session.");
+  },
+  "f-ann": () => {
+    const e = need([["an-title", "Add a headline."], ["an-body", "Write the message."]]);
+    if (Object.keys(e).length) return keepAndFail(e, ["an-title", "an-body"]);
+    state.announcements.push({ id: uid(), date: new Date(), pinned: $("#an-pin").checked, title: val("an-title"), body: val("an-body") });
+    state.formErrors = {}; render(); toast("Announcement published for this session.");
+  }
+};
+function keepAndFail(errs, ids) { const keep = ids.map(id => [id, val(id)]); fail(errs); keep.forEach(([id, v]) => { const el = $("#" + id); if (el) el.value = v; }); }
+
+/* ---------- Events ---------- */
+document.addEventListener("click", ev => {
+  if (ev.target.matches("[data-overlay]")) return closeModal();
+  if (ev.target.closest("[data-join]")) recordJoin();
+  const t = ev.target.closest("[data-go],[data-action],[data-tab-set]"); if (!t) return;
+  if (t.dataset.go) { closeModal(); return go(t.dataset.go, t.dataset.tab); }
+  if (t.dataset.tabSet) { const s = t.dataset.tabSet; state[s + "Tab"] = t.dataset.tab; state.formErrors = {}; if (s === "prayer" && t.dataset.tab !== "request") state.reqDone = null; return render(); }
+  const fn = actions[t.dataset.action]; if (fn) { ev.preventDefault(); fn(t); }
+});
+document.addEventListener("submit", ev => { const fn = forms[ev.target.id]; if (fn) { ev.preventDefault(); fn(ev.target); } });
+document.addEventListener("input", ev => {
+  if (ev.target.id === "lib-q") { state.sermonQuery = ev.target.value; const r = $("#lib-results"); if (r) r.innerHTML = libraryResults(); }
+  if (ev.target.id === "req-text") { const c = $("#req-count"); if (c) c.textContent = ev.target.value.length + " / 600"; }
+});
+document.addEventListener("keydown", ev => { if (ev.key === "Escape") closeModal(); });
+
+/* ---------- Start ---------- */
+document.querySelectorAll("[data-logo]").forEach(el => el.innerHTML = LOGO(+el.dataset.logo));
+const startView = (location.hash || "").slice(1);
+if (NAV.some(n => n[0] === startView)) state.view = startView;
+render();
+</script>
+<script>
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }
+</script>
+</body>
+</html>
