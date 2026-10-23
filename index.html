@@ -281,6 +281,60 @@ fieldset{border:0;padding:0;margin:0}
 .decl-word p{margin-top:10px;max-width:65ch}
 .refs{display:flex;flex-wrap:wrap;gap:6px}
 
+/* ---------- Home page: colour-coded sections (each colour matches its tab) ---------- */
+.tone-gold{--t:#86651a;--tw:#f6eed9;--ta:#c8a24a;--th:#0f1f3d;--th2:#1c3566}
+.tone-prayer{--t:#b2410e;--tw:#ffe9d9;--ta:#fb923c;--th:#74200d;--th2:#b93d0b}
+.tone-meetings{--t:#0b7069;--tw:#d7f7f5;--ta:#2dd4cf;--th:#0a4e5b;--th2:#0e7a8a}
+.tone-word{--t:#6232c8;--tw:#efe6ff;--ta:#c4a8ff;--th:#3c1f82;--th2:#6d3fd0}
+.tone-give{--t:#13703f;--tw:#dcf7e6;--ta:#4ade80;--th:#0f5a37;--th2:#147d48}
+.tone-me{--t:#b0215f;--tw:#fde4f0;--ta:#f9a8d4;--th:#86194d;--th2:#c2266f}
+.tone-join{--t:#1d5bb5;--tw:#e0edff;--ta:#7cb8ff;--th:#103d7d;--th2:#2563c9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tone-gold{--t:#dcb964;--tw:#2b2614;--ta:#d4ae55;--th:#13264b;--th2:#1b3463}:root:not([data-theme="light"]) .tone-prayer{--t:#fdba74;--tw:#3a1d0e;--ta:#fb923c;--th:#5a1c0b;--th2:#8a2f0f}:root:not([data-theme="light"]) .tone-meetings{--t:#5eead4;--tw:#0c3133;--ta:#2dd4cf;--th:#08404a;--th2:#0c6470}:root:not([data-theme="light"]) .tone-word{--t:#cdb6ff;--tw:#271a47;--ta:#c4a8ff;--th:#2b1764;--th2:#4a2aa0}:root:not([data-theme="light"]) .tone-give{--t:#86efac;--tw:#0d2e1d;--ta:#4ade80;--th:#0a3d25;--th2:#11643c}:root:not([data-theme="light"]) .tone-me{--t:#f9a8d4;--tw:#3a1328;--ta:#f9a8d4;--th:#5a1236;--th2:#8a1c52}:root:not([data-theme="light"]) .tone-join{--t:#a5cfff;--tw:#13274a;--ta:#7cb8ff;--th:#0f2f66;--th2:#1d4f9e}}
+:root[data-theme="dark"] .tone-gold{--t:#dcb964;--tw:#2b2614;--ta:#d4ae55;--th:#13264b;--th2:#1b3463}
+:root[data-theme="dark"] .tone-prayer{--t:#fdba74;--tw:#3a1d0e;--ta:#fb923c;--th:#5a1c0b;--th2:#8a2f0f}
+:root[data-theme="dark"] .tone-meetings{--t:#5eead4;--tw:#0c3133;--ta:#2dd4cf;--th:#08404a;--th2:#0c6470}
+:root[data-theme="dark"] .tone-word{--t:#cdb6ff;--tw:#271a47;--ta:#c4a8ff;--th:#2b1764;--th2:#4a2aa0}
+:root[data-theme="dark"] .tone-give{--t:#86efac;--tw:#0d2e1d;--ta:#4ade80;--th:#0a3d25;--th2:#11643c}
+:root[data-theme="dark"] .tone-me{--t:#f9a8d4;--tw:#3a1328;--ta:#f9a8d4;--th:#5a1236;--th2:#8a1c52}
+:root[data-theme="dark"] .tone-join{--t:#a5cfff;--tw:#13274a;--ta:#7cb8ff;--th:#0f2f66;--th2:#1d4f9e}
+.quick{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:640px){.quick{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1180px){.quick{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.qt{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;cursor:pointer;min-width:0;
+  background:linear-gradient(160deg,var(--tw) 0%,var(--surface) 78%);border:1px solid var(--line);border-top:3px solid var(--ta);
+  border-radius:16px;padding:14px;color:var(--fg);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+.qt:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(15,31,61,.06),0 10px 26px rgba(15,31,61,.10)}
+.qt .qi{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--th2),var(--th))}
+.qt .qi svg{width:22px;height:22px}
+.qt b{font-size:14.5px;line-height:1.25}
+.qt span.s{font-size:12.5px;color:var(--muted);line-height:1.35}
+.band{position:relative;overflow:hidden;border-radius:20px;padding:20px;color:#fff;background:radial-gradient(130% 120% at 90% 0%,var(--th2) 0%,var(--th) 65%)}
+.band::after{content:"";position:absolute;right:-40px;top:-50px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,var(--ta) 0%,transparent 66%);opacity:.28;pointer-events:none}
+.band .eyebrow{color:var(--ta)}
+.tw-band{display:flex;gap:16px;align-items:center}
+.tw-band .tw-ic{background:rgba(255,255,255,.14);color:#fff}
+.tw-band h2{font-family:var(--f-brand);font-weight:700;font-size:clamp(24px,6vw,34px);letter-spacing:.03em;line-height:1.1;margin:2px 0 4px}
+.tw-band p{color:rgba(255,255,255,.86);font-size:13.5px}
+.dcard{padding:0;overflow:hidden;border-top:0}
+.dcard .band{border-radius:0}
+.dcard .band h2{font-family:var(--f-brand);font-weight:700;font-size:clamp(22px,5.4vw,28px);letter-spacing:.02em;margin:4px 0 10px}
+.dcard .band .pill{background:rgba(255,255,255,.16);color:#fff}
+.dcard .body{padding:18px;display:flex;flex-direction:column;gap:14px}
+.dcard .decl-list li::before,.tone .decl-list li::before{background:var(--tw);color:var(--t)}
+.btn-tone{background:var(--ta);color:#0a1630}
+.btn-tone:hover{filter:brightness(.95)}
+.sec-ic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--tw);color:var(--t);flex:none}
+.sec-ic svg{width:17px;height:17px}
+.sec-title{display:flex;align-items:center;gap:10px}
+.tone .link{color:var(--t)}
+.tone.card{border-top:3px solid var(--ta)}
+.tone .date-tile.gold{background:var(--tw)}
+.tone .date-tile.gold .m{color:var(--t)}
+.tone .eyebrow{color:var(--t)}
+.band.tone .eyebrow,.tone .band .eyebrow{color:var(--ta)}
+.life{background:linear-gradient(150deg,var(--tw) 0%,var(--surface) 70%)}
+.life .big-num{font-size:40px;color:var(--t)}
+
 .theme-week{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
 .theme-week h2{font-family:var(--f-brand);font-weight:700;font-size:clamp(22px,5.5vw,30px);letter-spacing:.03em;line-height:1.15;margin:2px 0 4px;color:var(--fg)}
 .tw-ic{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--gold-wash);color:var(--gold-text)}
@@ -738,46 +792,47 @@ function viewHome() {
     <div class="hero-actions">${joinBtn("btn-lg")}<button class="btn btn-light btn-lg" data-go="prayer" data-tab="request">${ic("send")}Submit a Prayer Request</button></div>
   </section>
 
+  <nav class="quick" aria-label="Quick links">
+    ${[["prayer", "request", "tone-prayer", "send", "Prayer request", "Send it to our intercessors"],
+       ["meetings", "", "tone-meetings", "cal", "Meetings", "Tue & Fri, 9 PM Ghana time"],
+       ["word", "declare", "tone-word", "book", "Declarations", "Today's word from the altar"],
+       ["give", "", "tone-give", "gift", "Give", "Seeds & offerings"],
+       ["me", "", "tone-me", "user", "My prayer life", "Streaks & journal"],
+       ["join", "", "tone-join", "userplus", "Become a member", "Join the family"]]
+      .map(([go, tab, tone, i, t, sub]) => `<button class="qt ${tone}" data-go="${go}"${tab ? ` data-tab="${tab}"` : ""}><span class="qi">${ic(i)}</span><b>${t}</b><span class="s">${sub}</span></button>`).join("")}
+  </nav>
+
   ${themeCard()}
 
   ${declHomeCard()}
 
   <div class="grid-2">
     ${verseCard(v)}
-    <article class="card stack"><span class="eyebrow">Today's devotional</span>
+    <article class="card stack tone tone-word"><div class="sec-title"><span class="sec-ic">${ic("journal")}</span><span class="eyebrow">Today's devotional</span></div>
       <h2 style="font-family:var(--f-brand);font-weight:600;font-size:21px">${esc(dv.title)}</h2>
       <p class="muted small">${esc(dv.ref)}</p>
       <p>${esc(dv.reflection.split(". ").slice(0, 2).join(". "))}.</p>
       <div><button class="btn btn-line btn-sm" data-go="word" data-tab="today">Read today's devotional</button></div></article>
   </div>
 
-  ${BOOKS.length ? bookCard(BOOKS[0], true) : ""}
-
-  <div class="grid-2">
-    <section class="card"><div class="sec-head"><h2>Testimonies</h2><button class="link" data-go="prayer" data-tab="testimonies">${TESTIMONIES.length ? "See all" : "Share yours"}</button></div>
-      ${TESTIMONIES.length ? `<div class="stack" style="gap:14px">${sortedTestimonies().slice(0, 2).map(testimonyCard).join("")}</div>` : `<p class="muted">No testimonies published yet. Has God answered your prayer? Share it so we can rejoice together.</p>`}</section>
-    <section class="card stack"><div class="sec-head" style="margin:0"><h2>My prayer life</h2><button class="link" data-go="me">Open</button></div>
-      <div class="row" style="gap:16px;flex-wrap:nowrap"><div><span class="big-num">${streak()}</span><span class="muted small" style="display:block">day streak</span></div>
-        <p class="small muted" style="flex:1;min-width:0">${did(keyOf(new Date()), "prayed") ? "You've checked in today. Keep the fire burning." : "Have you prayed today? Check in to keep your streak going."}</p></div>
-      ${did(keyOf(new Date()), "prayed") ? "" : `<div><button class="btn btn-navy btn-sm" data-action="checkin" data-v="1">${ic("flame")}I prayed today</button></div>`}</section>
-  </div>
-
-  <div class="grid-2">
-    <section class="card stack"><div class="row" style="gap:12px;flex-wrap:nowrap"><span class="date-tile gold" style="display:grid;place-items:center;height:44px;width:44px;flex:none">${ic("gift")}</span>
-      <div style="min-width:0"><h2 style="font-size:17px">Give a seed or offering</h2><p class="muted small">Mobile Money and bank transfer details.</p></div></div>
-      <div><button class="btn btn-navy btn-sm" data-go="give">Give now</button></div></section>
-    <section class="card stack"><div class="row" style="gap:12px;flex-wrap:nowrap"><span class="date-tile gold" style="display:grid;place-items:center;height:44px;width:44px;flex:none">${ic("userplus")}</span>
-      <div style="min-width:0"><h2 style="font-size:17px">Become a member</h2><p class="muted small">Join the Upon the Altar family.</p></div></div>
-      <div><button class="btn btn-line btn-sm" data-go="join">Register</button></div></section>
-  </div>
-
-  <section class="card"><div class="sec-head"><h2>Upcoming prayer meetings</h2><button class="link" data-go="meetings">Full calendar</button></div>
+  <section class="card tone tone-meetings"><div class="sec-head"><div class="sec-title"><span class="sec-ic">${ic("cal")}</span><h2>Upcoming prayer meetings</h2></div><button class="link" data-go="meetings">Full calendar</button></div>
     <div class="list">${upcoming(4).map(meetingItem).join("")}</div></section>
 
+  ${BOOKS.length ? bookCard(BOOKS[0], true) : ""}
+
+  <div class="grid-2" style="align-items:start">
+    <section class="card tone tone-prayer"><div class="sec-head"><div class="sec-title"><span class="sec-ic">${ic("hands")}</span><h2>Testimonies</h2></div><button class="link" data-go="prayer" data-tab="testimonies">${TESTIMONIES.length ? "See all" : "Share yours"}</button></div>
+      ${TESTIMONIES.length ? `<div class="stack" style="gap:14px">${sortedTestimonies().slice(0, 2).map(testimonyCard).join("")}</div>` : `<p class="muted">No testimonies published yet. Has God answered your prayer? Share it so we can rejoice together.</p><div style="margin-top:12px"><button class="btn btn-line btn-sm" data-go="prayer" data-tab="testimonies">Share a testimony</button></div>`}</section>
+    <section class="card stack tone tone-me life"><div class="sec-head" style="margin:0"><div class="sec-title"><span class="sec-ic">${ic("flame")}</span><h2>My prayer life</h2></div><button class="link" data-go="me">Open</button></div>
+      <div class="row" style="gap:16px;flex-wrap:nowrap"><div><span class="big-num">${streak()}</span><span class="muted small" style="display:block">day streak</span></div>
+        <p class="small muted" style="flex:1;min-width:0">${did(keyOf(new Date()), "prayed") ? "You've checked in today. Keep the fire burning." : "Have you prayed today? Check in to keep your streak going."}</p></div>
+      ${did(keyOf(new Date()), "prayed") ? "" : `<div><button class="btn btn-tone btn-sm" data-action="checkin" data-v="1">${ic("flame")}I prayed today</button></div>`}</section>
+  </div>
+
   <div class="grid-2">
-    <section class="card"><div class="sec-head"><h2>Latest sermons</h2><button class="link" data-go="word" data-tab="library">Library</button></div>
+    <section class="card tone tone-word"><div class="sec-head"><div class="sec-title"><span class="sec-ic">${ic("play")}</span><h2>Latest sermons</h2></div><button class="link" data-go="word" data-tab="library">Library</button></div>
       <div class="list">${state.sermons.slice().sort((a, b) => b.date - a.date).slice(0, 3).map(sermonItem).join("")}</div></section>
-    <section class="card"><div class="sec-head"><h2>Announcements</h2></div>
+    <section class="card tone tone-join"><div class="sec-head"><div class="sec-title"><span class="sec-ic">${ic("mega")}</span><h2>Announcements</h2></div></div>
       <div class="list">${state.announcements.length ? sortedAnns().slice(0, 3).map(a => annItem(a)).join("") : empty("mega", "No announcements", "New announcements from the ministry will appear here.")}</div></section>
   </div>
   </div>`;
@@ -1025,10 +1080,10 @@ function themeCard() {
   const sameMonth = fmt(t.start, { month: "short" }) === fmt(t.end, { month: "short" });
   const range = sameMonth ? `${fmt(t.start, { day: "numeric" })} – ${fmt(t.end, { day: "numeric", month: "short" })}`
                           : `${fmt(t.start, { day: "numeric", month: "short" })} – ${fmt(t.end, { day: "numeric", month: "short" })}`;
-  return `<section class="theme-week" aria-labelledby="tw-title"><span class="tw-ic">${ic("flame")}</span>
-    <div style="min-width:0"><span class="eyebrow">Theme for the week</span>
+  return `<section class="band tone-prayer tw-band" aria-labelledby="tw-title"><span class="tw-ic">${ic("flame")}</span>
+    <div style="min-width:0;position:relative;z-index:1"><span class="eyebrow">Theme for the week</span>
       <h2 id="tw-title">${esc(t.title)}</h2>
-      <p class="muted small">Week ${t.week} of ${esc(t.month.split(" ")[0])} · ${range}</p></div></section>`;
+      <p>Week ${t.week} of ${esc(t.month.split(" ")[0])} · ${range}</p></div></section>`;
 }
 
 /* ---------- Daily declarations (from "The Altar Speaks") ---------- */
@@ -1042,14 +1097,16 @@ function declIndexFor(d = new Date()) {
 const declShown = () => state.declIdx == null ? declIndexFor() : state.declIdx;
 function declHomeCard() {
   const t = BOOK_THEMES[declIndexFor()], done = did(keyOf(new Date()), "declared");
-  return `<section class="card decl-home stack" aria-labelledby="dh-title">
-    <div class="row" style="justify-content:space-between;gap:8px"><span class="eyebrow">Today's declarations</span><span class="pill">Theme ${t.n} of ${BOOK_THEMES.length}</span></div>
-    <h2 id="dh-title">${esc(t.title)}</h2>
-    <blockquote class="decl-anchor">${esc(t.anchor)}<cite>${esc(t.ref)}</cite></blockquote>
-    <ol class="decl-list short">${t.decl.slice(0, 3).map(d => `<li>${esc(d)}</li>`).join("")}</ol>
-    <div class="row"><button class="btn btn-gold" data-go="word" data-tab="declare">${ic("flame")}Declare all ${t.decl.length}</button>
-      ${done ? `<span class="pill ok">${ic("check")}Declared today</span>` : ""}</div>
-    <p class="muted small">From <i>The Altar Speaks</i> by Peter Hostin Dadzie</p></section>`;
+  return `<section class="card dcard tone-word" aria-labelledby="dh-title">
+    <div class="band"><div style="position:relative;z-index:1">
+      <div class="row" style="justify-content:space-between;gap:8px"><span class="eyebrow">Today's declarations</span><span class="pill">Theme ${t.n} of ${BOOK_THEMES.length}</span></div>
+      <h2 id="dh-title">${esc(t.title)}</h2>
+      <blockquote class="decl-anchor on-dark" style="border-left-color:var(--ta)">${esc(t.anchor)}<cite style="color:var(--ta)">${esc(t.ref)}</cite></blockquote></div></div>
+    <div class="body">
+      <ol class="decl-list short">${t.decl.slice(0, 3).map(d => `<li>${esc(d)}</li>`).join("")}</ol>
+      <div class="row"><button class="btn btn-tone" data-go="word" data-tab="declare">${ic("flame")}Declare all ${t.decl.length}</button>
+        ${done ? `<span class="pill ok">${ic("check")}Declared today</span>` : ""}</div>
+      <p class="muted small">From <i>The Altar Speaks</i> by Peter Hostin Dadzie</p></div></section>`;
 }
 function declView() {
   const i = declShown(), t = BOOK_THEMES[i], isToday = i === declIndexFor(), done = did(keyOf(new Date()), "declared");
