@@ -335,6 +335,16 @@ fieldset{border:0;padding:0;margin:0}
 .life{background:linear-gradient(150deg,var(--tw) 0%,var(--surface) 70%)}
 .life .big-num{font-size:40px;color:var(--t)}
 
+.btn-wa{background:#25d366;color:#06281a}
+.btn-wa:hover{background:#1fbd5a}
+.wa-card{display:flex;flex-wrap:wrap;align-items:center;gap:14px 16px;background:linear-gradient(150deg,#e3f9ea 0%,var(--surface) 75%);
+  border:1px solid var(--line);border-left:4px solid #25d366;border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.wa-card h2{font-size:17px}
+.wa-ic{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#25d366;color:#06281a}
+.wa-ic svg{width:24px;height:24px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wa-card{background:linear-gradient(150deg,#0e2e1d 0%,var(--surface) 75%)}}
+:root[data-theme="dark"] .wa-card{background:linear-gradient(150deg,#0e2e1d 0%,var(--surface) 75%)}
+@media (max-width:520px){.wa-card .btn-wa{flex:1 1 100%}}
 .theme-week{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
 .theme-week h2{font-family:var(--f-brand);font-weight:700;font-size:clamp(22px,5.5vw,30px);letter-spacing:.03em;line-height:1.15;margin:2px 0 4px;color:var(--fg)}
 .tw-ic{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--gold-wash);color:var(--gold-text)}
@@ -510,6 +520,8 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
    https://meet.google.com/ . Leave it empty until you have it.
    ===================================================================== */
 const MEET_LINK = "https://meet.google.com/ztx-fvfx-wyf";
+// The ministry WhatsApp group. To change it, paste the new invite link here.
+const WHATSAPP_GROUP = "https://chat.whatsapp.com/FO5PLhCDGBpIIGP2ymSAca";
 
 /* WhatsApp number that receives prayer requests: country code + number, no "+" or spaces */
 const PRAYER_WHATSAPP = "233591742477";
@@ -535,6 +547,8 @@ const COUNTRIES = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "An
 const countryOptions = () => `<optgroup label="Most common">${TOP_COUNTRIES.map(c => `<option${c === "Ghana" ? " selected" : ""}>${c}</option>`).join("")}</optgroup><optgroup label="All countries">${COUNTRIES.map(c => `<option>${esc(c)}</option>`).join("")}</optgroup>`;
 // The Ghana region list only shows when Ghana is the chosen country.
 function syncCountry() { const c = $("#m-country"), w = $("#m-region-wrap"); if (c && w) w.hidden = c.value !== "Ghana"; }
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTH_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const HEARD_FROM = ["Friend or family", "WhatsApp", "Facebook", "TikTok", "YouTube", "A prayer meeting", "Other"];
 
 const MEETING_DAYS = [2, 5];      // 2 = Tuesday, 5 = Friday
@@ -600,6 +614,7 @@ const I = {
   spark: '<path d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',
   download: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
   gift: '<rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13M12 8S10.5 3 8 3.5 6.5 8 12 8zM12 8s1.5-5 4-4.5S17.5 8 12 8z"/>',
+  chat: '<path d="M4 20l1.4-4.2A8 8 0 1 1 8.6 19z"/><path d="M9 10h6M9 13.5h4"/>',
   copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
   phone: '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>',
   userplus: '<circle cx="10" cy="8" r="4"/><path d="M3 21c1.4-3.8 4-5.5 7-5.5s5.6 1.7 7 5.5M19 8v6M16 11h6"/>',
@@ -802,6 +817,8 @@ function viewHome() {
       .map(([go, tab, tone, i, t, sub]) => `<button class="qt ${tone}" data-go="${go}"${tab ? ` data-tab="${tab}"` : ""}><span class="qi">${ic(i)}</span><b>${t}</b><span class="s">${sub}</span></button>`).join("")}
   </nav>
 
+  ${waGroupCard()}
+
   ${themeCard()}
 
   ${declHomeCard()}
@@ -911,7 +928,7 @@ function viewMeetings() {
   return `<div class="view">${pageHead("Meetings & events", "Gather at the altar", "We meet online every Tuesday and Friday, 9:00 PM to 10:00 PM Ghana time (GMT).")}
   <section class="hero" style="gap:12px"><div class="next" style="background:none;border:0;padding:0"><div><span class="label">Next meeting</span><strong>${fLong(nm.start)}</strong>
     <span class="sub">${fTime(nm.start)} – ${fTime(nm.end)} Ghana time${viewerOutsideGhana ? " · " + fLocalTime(nm.start) + " your time" : ""}</span></div><div class="countdown" data-countdown></div></div>
-    <div class="hero-actions">${joinBtn("btn-lg")}</div></section>
+    <div class="hero-actions">${joinBtn("btn-lg")}${waGroupBtn("btn-lg")}</div></section>
 
   <div class="grid-2" style="align-items:start">
     <section class="card stack"><h2 style="font-size:18px">Weekly schedule</h2>
@@ -1038,6 +1055,16 @@ function viewGive() {
   </div>`;
 }
 
+/* ---------- WhatsApp group ---------- */
+const waGroupBtn = (cls = "", label = "Join our WhatsApp group") => WHATSAPP_GROUP ? `<a class="btn btn-wa ${cls}" href="${esc(WHATSAPP_GROUP)}" target="_blank" rel="noopener">${ic("chat")}${label}</a>` : "";
+function waGroupCard() {
+  if (!WHATSAPP_GROUP) return "";
+  return `<section class="wa-card" aria-labelledby="wa-title"><span class="wa-ic">${ic("chat")}</span>
+    <div style="min-width:0;flex:1"><h2 id="wa-title">Join our WhatsApp group</h2>
+      <p class="muted small">Get meeting reminders, the theme for the week and prayer updates on your phone.</p></div>
+    ${waGroupBtn("", "Join the group")}</section>`;
+}
+
 /* ---------- Theme for the week ---------- */
 // Each theme starts on the date given (Ghana time) and runs until the next one starts.
 // To add new themes, add lines in the same format. After the last theme's week ends the card hides itself.
@@ -1162,7 +1189,8 @@ function viewJoin() {
   ${state.memberDone && state.memberDone.sheet ? `<section class="card stack" style="max-width:640px" id="join-form">
       <div class="notice ok">${ic("check")}<div><b>Registration received.</b>Welcome to the Upon the Altar family, ${esc(state.memberDone.first)}! A leader will be in touch.</div></div>
       <p class="muted small">Join us online every Tuesday and Friday, 9:00 – 10:00 PM Ghana time.</p>
-      <div class="row">${joinBtn()}<button class="btn btn-line" data-action="member-again">Register someone else</button></div></section>`
+      ${WHATSAPP_GROUP ? `<p>Join our WhatsApp group to get meeting reminders and prayer updates.</p>` : ""}
+      <div class="row">${waGroupBtn()}${joinBtn()}<button class="btn btn-line" data-action="member-again">Register someone else</button></div></section>`
   : state.memberDone ? waPanel(state.memberDone, { id: "join-form", title: "Send your registration", key: "memberDone", again: "member-again", againLabel: "Register someone else", note: "Your registration goes from your own WhatsApp to the ministry. This app does not store it." })
   : `<form class="card form" id="f-join" novalidate style="max-width:640px">
     ${Object.keys(e).length ? `<div class="notice err" role="alert">${ic("alert")}<div><b>Please check the form.</b>${Object.values(e).map(esc).join(" ")}</div></div>` : ""}
@@ -1176,6 +1204,12 @@ function viewJoin() {
       <div class="field" id="m-region-wrap"><label for="m-region">Region in Ghana</label><select class="input" id="m-region" ${e["m-region"] ? 'aria-invalid="true"' : ""}><option value="">Choose your region</option>${GH_REGIONS.map(r => `<option>${r}</option>`).join("")}</select></div>
     </div>
     <div class="field"><label for="m-community">City, community or town</label><input class="input" id="m-community" maxlength="60" placeholder="e.g. Takoradi, Nairobi, London" ${e["m-community"] ? 'aria-invalid="true"' : ""}></div>
+    <fieldset class="field"><legend>Birthday <span class="muted small" style="font-weight:600">(optional)</span></legend>
+      <div class="form-grid two" style="grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)">
+        <div><label for="m-bday-day" class="sr-only">Day</label><select class="input" id="m-bday-day" ${e["m-bday-day"] ? 'aria-invalid="true"' : ""}><option value="">Day</option>${Array.from({ length: 31 }, (_, i) => `<option>${i + 1}</option>`).join("")}</select></div>
+        <div><label for="m-bday-month" class="sr-only">Month</label><select class="input" id="m-bday-month" ${e["m-bday-month"] ? 'aria-invalid="true"' : ""}><option value="">Month</option>${MONTHS.map(m => `<option>${m}</option>`).join("")}</select></div>
+      </div>
+      <span class="hint">Just the day and month, so we can celebrate you. We don't ask for the year.</span></fieldset>
     <div class="field"><label for="m-heard">How did you hear about us?</label><select class="input" id="m-heard" ${e["m-heard"] ? 'aria-invalid="true"' : ""}><option value="">Choose one</option>${HEARD_FROM.map(r => `<option>${r}</option>`).join("")}</select></div>
     <label class="check" style="align-items:flex-start"><input type="checkbox" id="m-consent" style="margin-top:3px"><span>I agree that Upon the Altar may keep these details and contact me about the ministry.</span></label>
     <div><button class="btn btn-gold btn-lg" type="submit" id="m-submit">${ic("userplus")}${MEMBERS_SHEET_URL ? "Register" : "Continue"}</button></div></form>`}
@@ -1491,25 +1525,30 @@ const forms = {
     state.giveDone = { url: waUrl(msg), msg }; state.formErrors = {}; render(); const t = $("#give-form"); t && t.scrollIntoView({ block: "start" });
   },
   "f-join": () => {
-    const ids = ["m-name", "m-phone", "m-country", "m-community", "m-region", "m-heard"];
+    const ids = ["m-name", "m-phone", "m-country", "m-community", "m-region", "m-bday-day", "m-bday-month", "m-heard"];
     const inGhana = val("m-country") === "Ghana";
     const e = need([["m-name", "Enter your full name."], ["m-country", "Choose your country."], ["m-community", "Enter your city, community or town."], ...(inGhana ? [["m-region", "Choose your region."]] : []), ["m-heard", "Tell us how you heard about us."]]);
     const digits = val("m-phone").replace(/\D/g, "");
     if (digits.length < 9 || digits.length > 15) e["m-phone"] = "Enter a valid phone number.";
+    const bd = val("m-bday-day"), bm = val("m-bday-month");
+    if (bd && !bm) e["m-bday-month"] = "Choose the month of your birthday.";
+    else if (bm && !bd) e["m-bday-day"] = "Choose the day of your birthday.";
+    else if (bd && +bd > MONTH_DAYS[MONTHS.indexOf(bm)]) e["m-bday-day"] = `${bm} has only ${MONTH_DAYS[MONTHS.indexOf(bm)]} days. Check your birthday.`;
+    const birthday = bd && bm ? bd + " " + bm : "";
     if (!$("#m-consent").checked) e["m-consent"] = "Tick the box to agree that we may keep your details.";
     if (Object.keys(e).length) { const c = $("#m-consent").checked; keepAndFail(e, ids); $("#m-consent").checked = c; syncCountry(); return; }
     const place = inGhana ? val("m-region") + ", Ghana" : val("m-country");
-    const msg = "NEW MEMBER REGISTRATION (Upon the Altar app)\nName: " + val("m-name") + "\nPhone: " + val("m-phone") + "\nCountry: " + val("m-country") + (inGhana ? "\nRegion: " + val("m-region") : "") + "\nCity/Community: " + val("m-community") + "\nHeard about us through: " + val("m-heard") + "\nAgreed that the ministry may keep these details: Yes";
+    const msg = "NEW MEMBER REGISTRATION (Upon the Altar app)\nName: " + val("m-name") + "\nPhone: " + val("m-phone") + "\nCountry: " + val("m-country") + (inGhana ? "\nRegion: " + val("m-region") : "") + "\nCity/Community: " + val("m-community") + (birthday ? "\nBirthday: " + birthday : "") + "\nHeard about us through: " + val("m-heard") + "\nAgreed that the ministry may keep these details: Yes";
     const wa = () => { state.memberDone = { url: waUrl(msg), msg }; state.memberError = false; state.formErrors = {}; render(); window.scrollTo({ top: 0 }); };
     if (!MEMBERS_SHEET_URL) return wa();
     if (val("m-website")) return;
-    const fields = { name: val("m-name"), phone: val("m-phone"), community: val("m-community"), country: val("m-country"), region: place, heard: val("m-heard"), consent: "yes", website: "" };
-    const val0 = { region: val("m-region") };
+    const fields = { name: val("m-name"), phone: val("m-phone"), community: val("m-community"), country: val("m-country"), region: place, birthday, heard: val("m-heard"), consent: "yes", website: "" };
+    const val0 = { region: val("m-region"), bd, bm };
     const btn = $("#m-submit"); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Registering…';
     state.memberPending = { url: waUrl(msg), msg, fields };
     fetch(MEMBERS_SHEET_URL, { method: "POST", mode: "no-cors", body: new URLSearchParams(fields) })
       .then(() => { state.memberDone = { sheet: true, first: fields.name.split(" ")[0] }; state.memberError = false; state.formErrors = {}; render(); window.scrollTo({ top: 0 }); })
-      .catch(() => { state.memberError = true; render(); Object.entries({ "m-name": fields.name, "m-phone": fields.phone, "m-country": fields.country, "m-community": fields.community, "m-region": inGhana ? val0.region : "", "m-heard": fields.heard }).forEach(([id, v]) => { $("#" + id).value = v; }); $("#m-consent").checked = true; syncCountry(); });
+      .catch(() => { state.memberError = true; render(); Object.entries({ "m-name": fields.name, "m-phone": fields.phone, "m-country": fields.country, "m-community": fields.community, "m-region": inGhana ? val0.region : "", "m-bday-day": val0.bd, "m-bday-month": val0.bm, "m-heard": fields.heard }).forEach(([id, v]) => { $("#" + id).value = v; }); $("#m-consent").checked = true; syncCountry(); });
   },
   "f-testimony": f => {
     const text = val("t-text"), name = val("t-name"), vis = f.querySelector('input[name="tvis"]:checked').value;
