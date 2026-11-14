@@ -788,7 +788,25 @@ const timeRange = e => multiDay(e) ? fDay(e.start) + " – " + fDay(e.end) + ", 
 
 /* ---------- Devotional / verse of the day ---------- */
 const todayVerse = () => VERSES[dayOfYear() % VERSES.length];
-const todayDevo = () => state.devotionals.find(d => d.id === state.featuredDev) || DEVOTIONALS[dayOfYear() % DEVOTIONALS.length];
+/* Fire on the Altar: today's devotional (and the next three days) comes from the Apps Script, which reads the devotional sheet */
+let FIRE = null;
+(function loadFire() {
+  if (!MEMBERS_SHEET_URL) return;
+  const n = new Date();
+  fetch(MEMBERS_SHEET_URL + "?action=devo&m=" + (n.getUTCMonth() + 1) + "&d=" + n.getUTCDate())
+    .then(r => r.json())
+    .then(j => {
+      if (!j || !Array.isArray(j.items) || !j.items.length) return;
+      FIRE = j.items.map(x => Object.assign({ id: "f-" + x.m + "-" + x.d }, x));
+      if (state.view === "home" || state.view === "word") render();
+    }).catch(() => {});
+})();
+function fireOn(dt) {
+  if (!FIRE) return null;
+  const m = dt.getUTCMonth() + 1, d = dt.getUTCDate();
+  return FIRE.find(x => x.m === m && x.d === d) || FIRE[0];
+}
+const todayDevo = () => state.devotionals.find(d => d.id === state.featuredDev) || (FIRE && FIRE.find(d => d.id === state.featuredDev)) || fireOn(new Date()) || DEVOTIONALS[dayOfYear() % DEVOTIONALS.length];
 
 /* ---------- Reusable components ---------- */
 function joinBtn(size = "") {
@@ -889,7 +907,7 @@ function viewHome() {
     <article class="card stack tone tone-word"><div class="sec-title"><span class="sec-ic">${ic("journal")}</span><span class="eyebrow">Today's devotional</span></div>
       <h2 style="font-family:var(--f-brand);font-weight:600;font-size:21px">${esc(dv.title)}</h2>
       <p class="muted small">${esc(dv.ref)}</p>
-      <p>${esc(dv.reflection.split(". ").slice(0, 2).join(". "))}.</p>
+      <p>${esc(String(dv.reflection).split(/\n\n+/)[0].split(". ").slice(0, 2).join(". ").replace(/\.$/, ""))}.</p>
       <div><button class="btn btn-line btn-sm" data-go="word" data-tab="today">Read today's devotional</button></div></article>
   </div>
 
@@ -1029,14 +1047,17 @@ function viewWord() {
   const t = state.wordTab; let body = "";
   if (t === "declare") body = declView();
   if (t === "today") {
-    const dv = todayDevo(); const others = state.devotionals.filter(d => d.id !== dv.id).slice(0, 3);
+    const dv = todayDevo(); const others = FIRE ? FIRE.filter(d => d !== dv).slice(0, 3) : state.devotionals.filter(d => d.id !== dv.id).slice(0, 3);
     body = `${verseCard(todayVerse(), true)}
-    <article class="card devo stack" style="gap:18px"><div class="stack" style="gap:6px"><span class="eyebrow">Today's devotional · ${fLong(new Date())}</span><h2>${esc(dv.title)}</h2></div>
+    <article class="card devo stack" style="gap:18px"><div class="stack" style="gap:6px"><span class="eyebrow">${dv.day ? `Fire on the Altar · Day ${dv.day} · ${dv.d} ${MONTHS[dv.m - 1]}` : `Today's devotional · ${fLong(new Date())}`}</span><h2>${esc(dv.title)}</h2></div>
       <div class="part"><h4>Scripture</h4><p style="font-family:var(--f-scripture);font-style:italic">"${esc(dv.text)}"</p><p class="small" style="font-weight:700">${esc(dv.ref)} (KJV)</p></div>
-      <div class="part"><h4>Reflection</h4><p>${esc(dv.reflection)}</p></div>
+      <div class="part"><h4>Reflection</h4>${String(dv.reflection).split(/\n\n+/).map(p => `<p>${esc(p)}</p>`).join("")}</div>
       <div class="part"><h4>Prayer</h4><p class="prayer">${esc(dv.prayer)}</p></div>
+      ${dv.declare ? `<div class="part"><h4>Declare</h4><p style="font-weight:700">${esc(dv.declare)}</p></div>` : ""}
+      ${dv.think ? `<div class="part"><h4>Think about it</h4><p>${esc(dv.think)}</p></div>` : ""}
+      ${dv.reading ? `<div class="part"><h4>Today's Bible reading</h4><p>${esc(dv.reading)}</p></div>` : ""}
       <div>${did(keyOf(new Date()), "devo") ? `<button class="btn btn-line btn-sm" data-action="devo-read" data-v="0">${ic("check")}Read today · undo</button>` : `<button class="btn btn-navy btn-sm" data-action="devo-read" data-v="1">${ic("check")}Mark as read</button>`}</div></article>
-    <section class="card"><div class="sec-head"><h2>More devotionals</h2></div><div class="list">${others.map(d => `<div class="item"><div class="body"><h3>${esc(d.title)}</h3><p>${esc(d.ref)}</p></div><button class="btn btn-line btn-sm" data-action="read-devo" data-id="${d.id}">Read</button></div>`).join("")}</div></section>`;
+    <section class="card"><div class="sec-head"><h2>${FIRE ? "Coming up in Fire on the Altar" : "More devotionals"}</h2></div><div class="list">${others.map(d => `<div class="item"><div class="body"><h3>${esc(d.title)}</h3><p>${esc(d.ref)}</p></div><button class="btn btn-line btn-sm" data-action="read-devo" data-id="${d.id}">Read</button></div>`).join("")}</div></section>`;
   }
   if (t === "topics") body = `<p class="muted" style="max-width:62ch">Use these topics in personal prayer or during our meetings. Tap a category to open it.</p>
     <div class="stack" style="gap:10px">${TOPICS.map((tp, i) => `<details class="topic" ${i === 0 ? "open" : ""}><summary>${esc(tp.name)}<span class="row" style="gap:8px"><span class="pill">${tp.points.length} points</span>${ic("down")}</span></summary>
@@ -1229,11 +1250,17 @@ function declView() {
 const BOOKS = [
   { title: "The Altar Speaks", subtitle: "Prophetic Declarations for Every Need of Life", author: "Peter Hostin Dadzie",
     file: "the-altar-speaks.pdf", cover: "the-altar-speaks-cover.jpg", pages: 202, size: "1.3 MB",
-    blurb: "45 themes of scripture-based declarations across six parts, including family and home, work and money, school, health and protection, breakthrough, and grace for living. Pray through it alone, with others, or in our meetings." }
+    blurb: "45 themes of scripture-based declarations across six parts, including family and home, work and money, school, health and protection, breakthrough, and grace for living. Pray through it alone, with others, or in our meetings." },
+  { title: "Fire on the Altar", subtitle: "365 Days of Quiet Time with God", author: "Peter Hostin Dadzie",
+    file: "https://drive.google.com/uc?export=download&id=1B0sZ1NcV5HQQkrtN8UgQds9799mFDmRm", view: "https://drive.google.com/file/d/1B0sZ1NcV5HQQkrtN8UgQds9799mFDmRm/view", cover: "https://lh3.googleusercontent.com/d/1F0ClUK8uVEUdhZJJMAFbykvouUuFA85j=w600", pages: 382, size: "1.3 MB",
+    blurb: "The Upon the Altar daily devotional: one page for every day of the year, with scripture, a short reflection, a prayer, a declaration, a question to carry through the day and a Bible reading plan. It is the devotional you see in this app each day." },
+  { title: "Rooted", subtitle: "The Foundations of Your New Life in Christ", author: "Peter Hostin Dadzie",
+    file: "https://drive.google.com/uc?export=download&id=1rbzKx1yXJD7DX0F9csMT02EjR2ILCBsm", view: "https://drive.google.com/file/d/1rbzKx1yXJD7DX0F9csMT02EjR2ILCBsm/view", cover: "https://lh3.googleusercontent.com/d/1CdjcpWhNHJhEd3l-IvD6bviPrHJ-Lpwr=w600", pages: 77, size: "0.7 MB",
+    blurb: "A simple guide for new believers: what happened when you gave your life to Jesus, who the Holy Spirit is, how to pray and read the Bible, why you still struggle with sin, and how to grow strong roots in Christ." }
 ];
 function bookCard(b, compact = false) {
   const dl = `<a class="btn btn-gold${compact ? " btn-sm" : ""}" href="${esc(b.file)}" download="${esc(b.title)} - ${esc(b.author)}.pdf">${ic("download")}Download free PDF</a>`;
-  const rd = `<a class="btn btn-line${compact ? " btn-sm" : ""}" href="${esc(b.file)}" target="_blank" rel="noopener">${ic("book")}Read online</a>`;
+  const rd = `<a class="btn btn-line${compact ? " btn-sm" : ""}" href="${esc(b.view || b.file)}" target="_blank" rel="noopener">${ic("book")}Read online</a>`;
   return `<article class="card book${compact ? " compact" : ""}"><img class="book-cover" src="${esc(b.cover)}" alt="Cover of ${esc(b.title)} by ${esc(b.author)}" loading="lazy" width="480" height="720">
     <div class="stack" style="gap:8px;min-width:0"><span class="eyebrow">${compact ? "Free prayer book" : "Upon the Altar prayer book"}</span>
       <h2 style="font-family:var(--f-brand);font-weight:600;font-size:${compact ? 20 : 24}px">${esc(b.title)}</h2>
