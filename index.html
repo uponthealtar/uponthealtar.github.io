@@ -891,10 +891,12 @@ function viewHome() {
        ["meetings", "", "tone-meetings", "cal", "Meetings", "Tue & Fri, 9 PM Ghana time"],
        ["word", "declare", "tone-word", "book", "Declarations", "Today's word from the altar"],
        ["give", "", "tone-give", "gift", "Give", "Seeds & offerings"],
-       ["me", "", "tone-me", "user", "My prayer life", "Streaks & journal"],
-       ["join", "", "tone-join", "userplus", "Become a member", "Join the family"]]
+       ["me", "", "tone-me", "user", "My prayer life", "Streaks & journal"]]
       .map(([go, tab, tone, i, t, sub]) => `<button class="qt ${tone}" data-go="${go}"${tab ? ` data-tab="${tab}"` : ""}><span class="qi">${ic(i)}</span><b>${t}</b><span class="s">${sub}</span></button>`).join("")}
+    <a class="qt tone-gold" href="${STORE_URL}" target="_blank" rel="noopener" style="text-decoration:none"><span class="qi">${ic("book")}</span><b>Bookshop</b><span class="s">Buy books by Peter Hostin Dadzie</span></a>
   </nav>
+
+  ${storeCard(true)}
 
   ${waGroupCard()}
 
@@ -915,8 +917,6 @@ function viewHome() {
     <div class="list">${upcoming(4).map(meetingItem).join("")}</div></section>
 
   ${BOOKS.length ? bookCard(BOOKS[0], true) : ""}
-
-  ${storeCard(true)}
 
   <div class="grid-2" style="align-items:start">
     <section class="card tone tone-prayer"><div class="sec-head"><div class="sec-title"><span class="sec-ic">${ic("hands")}</span><h2>Testimonies</h2></div><button class="link" data-go="prayer" data-tab="testimonies">${TESTIMONIES.length ? "See all" : "Share yours"}</button></div>
